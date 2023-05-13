@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import { someHandler } from "./handlers";
+import { someHandler } from "../middleware/handlers";
 
 const router: Router = express.Router();
 
