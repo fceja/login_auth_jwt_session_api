@@ -1,19 +1,39 @@
-import { Request, Response} from "express";
+import { Request, Response } from "express";
 
 import dbPool from "../utils/dbInit";
 
-// TODO: update to create user in db
-export async function createUser (req: Request, res: Response) {
-    const dbConn = await dbPool.connect()
+// TODO: hash password
+export async function createUser(req: Request, res: Response) {
+  try {
+    // init db connection
+    const dbConn = await dbPool.connect();
 
-    try {
-        const data = await dbConn.query('select * from "Users"')
-        res.json({"from POST /user/create": data.rows})
+    // query vars
+    const { email, password } = req.body;
+    const now = new Date().toISOString();
 
-    } catch (err) {
-        console.error(`Error: ${err}`)
+    // query db
+    const query = await dbConn.query(
+      ` insert into "Users" (email, password, "createdAt", "lastUpdated")
+        values ($1, $2, $3, $4)
+        on conflict (email) do nothing
+        returning id, email, "createdAt", "lastUpdated"
+      `,
+      [email, password, now, now]
+    );
 
-    } finally {
-        dbConn.end();
+    // return query result
+    if (query.rowCount === 0) {
+      res.status(400).json({ error: "Email already exists" });
+    } else {
+      res.json({ result: query.rows });
     }
+
+    // end db connection
+    dbConn.end();
+  } catch (err) {
+    // error
+    console.error(`Error: ${err}`);
+    res.status(500);
+  }
 }

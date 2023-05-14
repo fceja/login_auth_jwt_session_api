@@ -1,18 +1,21 @@
-import { Request, Response} from "express";
+import { Request, Response } from "express";
 
 import dbPool from "../utils/dbInit";
 
-export async function getUsers (req: Request, res: Response) {
-    const dbConn = await dbPool.connect()
+export async function getUsers(req: Request, res: Response) {
+  try {
+    // init db connection
+    const dbConn = await dbPool.connect();
 
-    try {
-        const data = await dbConn.query('select * from "Users"')
-        res.json({"from GET /user/getUsers": data.rows})
+    // excecute query
+    const data = await dbConn.query('select * from "Users"');
+    res.json({ "from GET /user/getUsers": data.rows });
 
-    } catch (err) {
-        console.error(`Error: ${err}`)
-
-    } finally {
-        dbConn.end();
-    }
+    // end db connection
+    dbConn.end();
+  } catch (err) {
+    // error
+    console.error(`Error: ${err}`);
+    res.status(500);
+  }
 }
