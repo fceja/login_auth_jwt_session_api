@@ -1,8 +1,7 @@
 const dbConfig = require('../config/dbConfig')
+const { Pool } = require('pg');
 
-const { Client } = require(dbConfig.DB_TYPE);
-
-const dbConn = new Client({
+const dbPool = new Pool({
     user: dbConfig.USER,
     host: dbConfig.HOST,
     database: dbConfig.DB_NAME,
@@ -10,4 +9,4 @@ const dbConn = new Client({
     port: dbConfig.PORT,
 })
 
-export default dbConn;
+export default dbPool;
