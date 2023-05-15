@@ -1,33 +1,53 @@
 import dbPool from "../utils/dbInit";
 
+const bcrypt = require("bcrypt");
+
 export default async function createUserController(user) {
-  try {
-    // init db connection
-    const dbConn = await dbPool.connect();
+  // init db connection
+  const dbConn = await dbPool.connect();
 
-    // query db
-    const query = await dbConn.query(
-      ` insert into "Users" (email, password, "createdAt", "lastUpdated")
-        values ($1, $2, $3, $4)
-        on conflict (email) do nothing
-        returning id, email, "createdAt", "lastUpdated"
-      `,
-      [user.email, user.password, user.createdAt, user.lastUpdated]
-    );
-
-    // end db connection
+  // check if email alrady exists
+  const emailExists = await ifEmailExists(dbConn, user.email);
+  if (emailExists) {
     dbConn.end();
 
-    // return
-    if (query.rowCount === 0) {
-      // user not created, exists already
-      return null;
-    } else {
-      // user created
-      return query.rows;
-    }
+    return null;
+  }
+
+  // create account
+  try {
+    // db query, create account
+    const query = await dbConn.query(
+      ` insert into "Users" (email, password, "createdAt", "lastUpdated")
+      values ($1, $2, $3, $4)
+      on conflict (email) do nothing
+      returning id, email, "createdAt", "lastUpdated"
+      `,
+      [
+        user.email,
+        bcrypt.hashSync(user.password, 10),
+        user.createdAt,
+        user.lastUpdated,
+      ]
+    );
+
+    dbConn.end();
+
+    return query.rows;
   } catch (err) {
-    // error
+    console.error(`Error: ${err}`);
+  }
+}
+
+async function ifEmailExists(dbConn, email) {
+  try {
+    // db query, retrieve email if exists
+    const query = await dbConn.query(
+      `select * from "Users" where email='${email}'`
+    );
+
+    return query.rowCount > 0 ? true : false;
+  } catch (err) {
     console.error(`Error: ${err}`);
   }
 }
