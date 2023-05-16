@@ -1,11 +1,11 @@
 import User from "../models/User"
 
-const UserController = require("../controllers/UserController");
+const AuthController = require("../controllers/AuthController");
 
 export async function loginUser (req, res) {
     const user = new User(req.body);
 
-    const authd = await UserController.loginUser(user, req, res);
+    const authd = await AuthController.loginUser(user, req, res);
 
     if (!authd) {
         res.status(200).json({'message': 'Not authorized'})
