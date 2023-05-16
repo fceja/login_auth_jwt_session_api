@@ -4,7 +4,7 @@ const authConfig = require("../config/authConfig");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-exports.createUserCtrl = async (user) => {
+exports.createUser = async (user) => {
   // init db connection
   const dbConn = await dbPool.connect();
 
@@ -43,7 +43,7 @@ exports.createUserCtrl = async (user) => {
   }
 };
 
-exports.loginUserCtrl = async (user, req, res) => {
+exports.loginUser = async (user, req, res) => {
   // init db connection
   const dbConn = await dbPool.connect();
 

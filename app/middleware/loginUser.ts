@@ -5,7 +5,7 @@ const UserController = require("../controllers/UserController");
 export async function loginUser (req, res) {
     const user = new User(req.body);
 
-    const authd = await UserController.loginUserCtrl(user, req, res);
+    const authd = await UserController.loginUser(user, req, res);
 
     if (!authd) {
         res.status(200).json({'message': 'Not authorized'})
