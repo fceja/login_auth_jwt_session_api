@@ -8,7 +8,7 @@ export async function createUser(req: Request, res: Response) {
   try {
     // create user
     let user = new newUser(req.body);
-    user = await UserController.createUserCtrl(user);
+    user = await UserController.createUser(user);
 
     // return response
     if (!user) {
