@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 
-import createUserController from "../controllers/createUserController";
+import UserController from "../controllers/UserController";
 import newUser from "../models/newUser";
 
 export async function createUser(req: Request, res: Response) {
   try {
     // create user
     let user = new newUser(req.body);
-    user = await createUserController(user);
+    user = await UserController.createUser(user);
 
     // return response
     if (!user) {
