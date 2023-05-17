@@ -6,7 +6,8 @@ import testRouter from "./testRoutes";
 
 const router: Router = express.Router();
 
-router.use("/", (req, res) => {res.json({message:'index'})});
+router.get("/", (req, res) => {res.json({message:'index'})});
+
 router.use("/test", testRouter);
 router.use("/auth", authRouter);
 router.use("/user", userRouter);
