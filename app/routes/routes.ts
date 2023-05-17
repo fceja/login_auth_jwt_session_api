@@ -14,7 +14,7 @@ router.get("/", (req, res) => {
 });
 router.use(
   "/test",
-  [midWare.validateJwtToken, midWare.refreshJwtToken],
+  [midWare.authValidateJwtToken, midWare.authRefreshJwtToken],
   testRouter
 );
 router.use("/auth", authRouter);
