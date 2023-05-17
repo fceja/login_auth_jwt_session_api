@@ -1,6 +1,6 @@
 import express from "express";
 
-import { someHandler } from "../middleware/testHandler";
+import { someHandler } from "../middleware/test/testHandler";
 
 const testRouter = express.Router();
 

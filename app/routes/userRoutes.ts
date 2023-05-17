@@ -1,7 +1,7 @@
 import express from "express";
 
-import { createUser } from "../middleware/createUser";
-import { getUsers } from "../middleware/getUsers";
+import { createUser } from "../middleware/user/createUser";
+import { getUsers } from "../middleware/user/getUsers";
 
 const usersRouter = express.Router();
 

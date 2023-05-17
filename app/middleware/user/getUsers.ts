@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import dbPool from "../utils/dbInit";
+import dbPool from "../../utils/dbInit";
 
 export async function getUsers(req: Request, res: Response) {
   try {

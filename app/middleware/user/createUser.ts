@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 
-import newUser from "../models/newUser";
+import newUser from "../../models/newUser";
 
-const UserController = require("../controllers/UserController");
+const UserController = require("../../controllers/UserController");
 
 export async function createUser(req: Request, res: Response) {
   try {

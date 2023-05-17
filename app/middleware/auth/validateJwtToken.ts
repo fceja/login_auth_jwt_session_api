@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
-const authConfig = require("../config/authConfig");
+const authConfig = require("../../config/authConfig");
 
-const validateToken = (req, res, next) => {
+export default function validateJwtToken(req, res, next) {
   const token = req.session.token;
 
   if (!token) {
@@ -25,8 +25,3 @@ const validateToken = (req, res, next) => {
     }
   }
 };
-
-const authJwtMiddleware = {
-  validateToken: validateToken,
-};
-export default authJwtMiddleware;
