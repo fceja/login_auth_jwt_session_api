@@ -1,10 +1,14 @@
 import express from "express";
 
-import { someHandler } from "../middleware/test/testHandler";
+import { midWare } from "../middleware";
 
 const testRouter = express.Router();
 
 // GET
-testRouter.get("/", someHandler);
+testRouter.get(
+  "/",
+  [midWare.authValidateJwtToken, midWare.authRefreshJwtToken],
+  midWare.testSomeHandler
+);
 
 export default testRouter;
