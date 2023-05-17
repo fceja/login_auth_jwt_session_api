@@ -1,5 +1,5 @@
-import authMidWare  from './authJwt';
+import performAuthFuncs  from './auth/performAuthFuncs';
 
-export const authJwt = {
-    validateToken:authMidWare.validateToken
+export const midWare = {
+    performAuthFuncs:performAuthFuncs
 };

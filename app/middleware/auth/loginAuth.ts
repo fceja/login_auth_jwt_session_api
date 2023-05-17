@@ -1,6 +1,6 @@
-import User from "../models/User"
+import User from "../../models/User"
 
-const AuthController = require("../controllers/AuthController");
+const AuthController = require("../../controllers/AuthController");
 
 export async function loginAuth (req, res) {
     const user = new User(req.body);
