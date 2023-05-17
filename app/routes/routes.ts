@@ -1,11 +1,14 @@
 import express, { Router } from "express";
 
-import { someHandler } from "../middleware/handlers";
-import userRouter from "./user";
+import userRouter from "./userRoutes";
+import authRouter from "./authRoutes";
+import testRouter from "./testRoutes";
 
 const router: Router = express.Router();
 
-router.get("/", someHandler);
+router.use("/", (req, res) => {res.json({message:'index'})});
+router.use("/test", testRouter);
+router.use("/auth", authRouter);
 router.use("/user", userRouter);
 
 export default router;
