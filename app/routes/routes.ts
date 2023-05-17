@@ -9,8 +9,14 @@ import { midWare } from "../middleware";
 const router = express.Router();
 
 // routes
-router.get("/", (req, res) => {res.json({message:'public - index'})});
-router.use("/test", [midWare.performAuthFuncs], testRouter);
+router.get("/", (req, res) => {
+  res.json({ message: "public - index" });
+});
+router.use(
+  "/test",
+  [midWare.validateJwtToken, midWare.refreshJwtToken],
+  testRouter
+);
 router.use("/auth", authRouter);
 router.use("/user", userRouter);
 

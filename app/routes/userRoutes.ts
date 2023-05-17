@@ -8,7 +8,11 @@ const usersRouter = express.Router();
 
 //#region - AUTH REQ
 // GET
-usersRouter.get("/getUsers", [midWare.performAuthFuncs], getUsers);
+usersRouter.get(
+  "/getUsers",
+  [midWare.validateJwtToken, midWare.refreshJwtToken],
+  getUsers
+);
 //#endregion - AUTH REQ
 
 //#region - NO AUTH REQ

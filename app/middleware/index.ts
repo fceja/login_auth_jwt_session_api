@@ -1,5 +1,7 @@
-import performAuthFuncs  from './auth/performAuthFuncs';
+import validateJwtToken from './auth/validateJwtToken';
+import refreshJwtToken from './auth/refresJwtToken';
 
 export const midWare = {
-    performAuthFuncs:performAuthFuncs
+    validateJwtToken:validateJwtToken,
+    refreshJwtToken:refreshJwtToken
 };

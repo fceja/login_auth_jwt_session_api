@@ -2,26 +2,18 @@ const jwt = require("jsonwebtoken");
 const authConfig = require("../../config/authConfig");
 
 export default function validateJwtToken(req, res, next) {
-  const token = req.session.token;
+  try {
+    // check if valid jwt
+    jwt.verify(req.session.token, authConfig.secret);
 
-  if (!token) {
-    // jwt missing
-    return res.status(403).send({
+    // jwt is valid
+    next();
+
+  } catch (err) {
+
+    // invalid jwt
+    return res.status(401).send({
       message: "Token error",
     });
-  } else {
-    try {
-      // check if valid jwt
-      jwt.verify(token, authConfig.secret);
-
-      // jwt is valid
-      next();
-    } catch (err) {
-
-      // invalid jwt
-      return res.status(401).send({
-        message: "Token expired",
-      });
-    }
   }
 };
