@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const dbService = require("../services/dbUserService");
 const jwt = require("jsonwebtoken");
 
-exports.loginAuth = async (user, req, res) => {
+export const loginAuth = async (user, req, res) => {
   // init db connection
   const dbConn = await dbPool.connect();
 
@@ -36,7 +36,7 @@ exports.loginAuth = async (user, req, res) => {
   return true;
 };
 
-exports.getSessionToken = (req, user) => {
+export const getSessionToken = (req, user) => {
   // assign jwt token
   const token = jwt.sign({ id: user.id }, authConfig.secret, {
     expiresIn: 10, // 10 secs
