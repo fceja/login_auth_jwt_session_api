@@ -1,5 +1,5 @@
-const authJwt = require('./authJwt');
+import authMidWare  from './authJwt';
 
-module.exports = {
-    authJwt
+export const authJwt = {
+    validateToken:authMidWare.validateToken
 };
