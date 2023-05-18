@@ -11,10 +11,9 @@ export const createUser = async (user) => {
   // check if email exists
   const emailExists = await ifUserExists(dbConn, user.email);
   if (emailExists) {
-    // email already exists
     dbConn.end();
 
-    return null;
+    return 'exists';
   }
 
   try {

@@ -3,17 +3,17 @@ import { Request, Response } from "express";
 import { createUser } from "../../controllers/UserController";
 import newUser from "../../models/newUser";
 
-export async function createUserMidW(req: Request, res: Response) {
+export default async function createUserMW(req: Request, res: Response) {
   try {
     // create user
     let user = new newUser(req.body);
     user = await createUser(user);
 
-    // return response
-    if (!user) {
-      res.status(400).json({ error: "Email already exists" });
+    if (user === 'exists') {
+      res.status(200).json({ message: "Email exists"});
+
     } else {
-      res.json({ user });
+      res.status(200).json({ user });
     }
   } catch (err) {
     //error
