@@ -44,3 +44,7 @@ export const getSessionToken = (req, user) => {
 
   return token;
 };
+
+export const validateJwtToken = (req) => {
+  jwt.verify(req.session.token, authConfig.secret);
+}

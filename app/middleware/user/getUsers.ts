@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 import { getUsers } from "../../controllers/UserController";
 
-export async function getUsersMidW(req: Request, res: Response) {
+export default async function getUsersMW(req: Request, res: Response) {
   try {
     const users = await getUsers();
 

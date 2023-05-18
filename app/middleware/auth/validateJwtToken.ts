@@ -1,13 +1,9 @@
-import jwt from "jsonwebtoken"
+import { validateJwtToken } from "../../controllers/AuthController";
 
-import { authConfig } from "../../config/authConfig";
-
-export default function validateJwtToken(req, res, next) {
+export default function validateJwtTokenMW(req, res, next) {
   try {
     // check if valid jwt
-    jwt.verify(req.session.token, authConfig.secret);
-
-    // jwt is valid
+    validateJwtToken(req)
     next();
 
   } catch (err) {
