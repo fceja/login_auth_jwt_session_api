@@ -20,7 +20,7 @@ export const loginAuth = async (user, req, res) => {
 
   // query db with user email
   const query = await dbConn.query(
-    `select * from "Users" where email='${user.email}'`
+    `select * from _user where email='${user.email}'`
   );
 
   // check if password is valid

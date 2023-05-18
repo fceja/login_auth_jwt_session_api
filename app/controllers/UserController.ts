@@ -19,10 +19,10 @@ exports.createUser = async (user) => {
   try {
     // create account in db
     const query = await dbConn.query(
-      ` insert into "Users" (email, password, "createdAt", "lastUpdated")
+      ` insert into _user (email, password, created_at, last_updated)
       values ($1, $2, $3, $4)
       on conflict (email) do nothing
-      returning id, email, "createdAt", "lastUpdated"
+      returning user_id, email, created_at, last_updated
       `,
       [
         user.email,

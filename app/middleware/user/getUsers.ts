@@ -8,7 +8,7 @@ export async function getUsers(req: Request, res: Response) {
     const dbConn = await dbPool.connect();
 
     // excecute query
-    const data = await dbConn.query('select * from "Users"');
+    const data = await dbConn.query('select * from _user');
     res.json({ "from GET /user/getUsers": data.rows });
 
     // end db connection
