@@ -1,20 +1,18 @@
-require('dotenv').config();
-
-import express, { Application } from "express";
 import bodyParser from "body-parser";
+import cookieSession from "cookie-session"
+import cors from "cors";
+import dotenv from "dotenv";
+import express, { Application } from "express";
 
 import router from "./routes/routes";
 
-const cookieSession = require("cookie-session");
-const cors = require("cors");
 const port = 3000;
-
 const app: Application = express();
 
-app.use(cors());
+dotenv.config()
 
 app.use(bodyParser.json());
-
+app.use(cors());
 app.use(
   cookieSession({
     name: "app-session",

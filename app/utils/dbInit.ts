@@ -1,5 +1,5 @@
-const dbConfig = require('../config/dbConfig')
-const { Pool } = require('pg');
+import { dbConfig } from "../config/dbConfig";
+import { Pool } from 'pg';
 
 const dbPool = new Pool({
     user: dbConfig.USER,

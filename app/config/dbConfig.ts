@@ -1,6 +1,8 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
 
-module.exports = {
+dotenv.config()
+
+export const dbConfig = {
     DB_TYPE: process.env.DB_TYPE,
     HOST: process.env.DB_HOST,
     USER: process.env.DB_USER,

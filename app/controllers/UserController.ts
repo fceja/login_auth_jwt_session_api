@@ -1,14 +1,15 @@
-import dbPool from "../utils/dbInit";
+import bcrypt from "bcrypt";
 
-const bcrypt = require("bcrypt");
-const dbService = require("../services/dbUserService")
+import dbPool from "../utils/dbInit";
+import {ifUserExists} from "../services/dbUserService"
+
 
 export const createUser = async (user) => {
   // init db connection
   const dbConn = await dbPool.connect();
 
   // check if email exists
-  const emailExists = await dbService.ifUserExists(dbConn, user.email);
+  const emailExists = await ifUserExists(dbConn, user.email);
   if (emailExists) {
     // email already exists
     dbConn.end();
