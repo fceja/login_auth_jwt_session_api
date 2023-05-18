@@ -1,5 +1,6 @@
-const jwt = require("jsonwebtoken");
-const authConfig = require("../../config/authConfig");
+import jwt from "jsonwebtoken"
+
+import { authConfig } from "../../config/authConfig";
 
 export default function validateJwtToken(req, res, next) {
   try {

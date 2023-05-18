@@ -1,16 +1,16 @@
-import dbPool from "../utils/dbInit";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken"
 
-const authConfig = require("../config/authConfig");
-const bcrypt = require("bcrypt");
-const dbService = require("../services/dbUserService");
-const jwt = require("jsonwebtoken");
+import { authConfig } from "../config/authConfig";
+import dbPool from "../utils/dbInit";
+import { ifUserExists } from "../services/dbUserService"
 
 export const loginAuth = async (user, req, res) => {
   // init db connection
   const dbConn = await dbPool.connect();
 
   // check if email already exists
-  const emailExists = await dbService.ifUserExists(dbConn, user.email);
+  const emailExists = await ifUserExists(dbConn, user.email);
   if (!emailExists) {
     // email exists, terminate db connection
     dbConn.end();

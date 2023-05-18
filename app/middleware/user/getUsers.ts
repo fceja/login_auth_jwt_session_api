@@ -1,21 +1,16 @@
 import { Request, Response } from "express";
 
-import dbPool from "../../utils/dbInit";
+import { getUsers } from "../../controllers/UserController";
 
-export async function getUsers(req: Request, res: Response) {
+export async function getUsersMidW(req: Request, res: Response) {
   try {
-    // init db connection
-    const dbConn = await dbPool.connect();
+    const users = await getUsers();
 
-    // excecute query
-    const data = await dbConn.query('select * from _user');
-    res.json({ "from GET /user/getUsers": data.rows });
+    res.status(200).json({ "from GET /user/getUsers": users });
 
-    // end db connection
-    dbConn.end();
   } catch (err) {
-    // error
-    console.error(`Error: ${err}`);
-    res.status(500);
+    console.error(err);
+
+    res.status(500).json(err);
   }
 }
