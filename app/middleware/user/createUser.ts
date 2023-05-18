@@ -1,14 +1,13 @@
 import { Request, Response } from "express";
 
+import { createUser } from "../../controllers/UserController";
 import newUser from "../../models/newUser";
 
-const UserController = require("../../controllers/UserController");
-
-export async function createUser(req: Request, res: Response) {
+export async function createUserMidW(req: Request, res: Response) {
   try {
     // create user
     let user = new newUser(req.body);
-    user = await UserController.createUser(user);
+    user = await createUser(user);
 
     // return response
     if (!user) {
@@ -18,7 +17,7 @@ export async function createUser(req: Request, res: Response) {
     }
   } catch (err) {
     //error
-    console.error(`Error: ${err}`);
+    console.error(err);
     res.status(500).json({ error: "Internal server error" });
   }
 }

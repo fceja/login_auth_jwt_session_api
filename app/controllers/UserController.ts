@@ -3,14 +3,14 @@ import dbPool from "../utils/dbInit";
 const bcrypt = require("bcrypt");
 const dbService = require("../services/dbUserService")
 
-exports.createUser = async (user) => {
+export const createUser = async (user) => {
   // init db connection
   const dbConn = await dbPool.connect();
 
   // check if email exists
   const emailExists = await dbService.ifUserExists(dbConn, user.email);
   if (emailExists) {
-    // email already exists, terminate db connection
+    // email already exists
     dbConn.end();
 
     return null;
@@ -41,3 +41,16 @@ exports.createUser = async (user) => {
     console.error(`Error: ${err}`);
   }
 };
+
+export const getUsers = async () => {
+  // init db connection
+  const dbConn = await dbPool.connect();
+
+  // excecute query
+  const data = await dbConn.query('select * from _user');
+
+  // end db connection
+  dbConn.end();
+
+  return data.rows
+}

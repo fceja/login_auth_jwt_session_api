@@ -1,5 +1,3 @@
 require('dotenv').config();
 
-module.exports = {
-    secret: process.env.AUTH_SECRET
-}
+export const authConfig = { secret:process.env.AUTH_SECRET }
