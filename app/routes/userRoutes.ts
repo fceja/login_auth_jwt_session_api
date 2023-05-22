@@ -1,6 +1,6 @@
 import express from "express";
 
-import { midWare } from "../middleware";
+import { midW } from "../middleware";
 
 const usersRouter = express.Router();
 
@@ -8,14 +8,14 @@ const usersRouter = express.Router();
 // GET
 usersRouter.get(
   "/getUsers",
-  [midWare.authValidateJwtToken, midWare.authRefreshJwtToken],
-  midWare.userGetUsers
+  [midW.authRequireAdmin, midW.authValidateJwtToken, midW.authRefreshJwtToken],
+  midW.userGetUsers
 );
 //#endregion - AUTH REQ
 
 //#region - NO AUTH REQ
 // POST
-usersRouter.post("/create", midWare.userCreateUser);
+usersRouter.post("/create", midW.userCreateUser);
 //#endregion - NO AUTH REQ
 
 export default usersRouter;

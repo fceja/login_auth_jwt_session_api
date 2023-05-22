@@ -1,14 +1,16 @@
 import express from "express";
 
-import { midWare } from "../middleware";
+import { midW } from "../middleware";
 
 const testRouter = express.Router();
 
+//#region - AUTH REQ
 // GET
 testRouter.get(
   "/",
-  [midWare.authValidateJwtToken, midWare.authRefreshJwtToken],
-  midWare.testSomeHandler
-);
+  [midW.authValidateJwtToken, midW.authRefreshJwtToken],
+  midW.testSomeHandler
+  );
+//#endregion - AUTH REQ
 
 export default testRouter;
