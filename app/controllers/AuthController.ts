@@ -54,7 +54,7 @@ export const loginAuth = async (userData, req, res) => {
     return false;
   }
 
-  // TODO: get role
+  // get user role
   const retUserRole = (await dbGetUserRole(dbConn, userData.email)).rows[0]
   req.session.userRole = JSON.parse(JSON.stringify(retUserRole)).role;
 
