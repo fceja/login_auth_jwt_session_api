@@ -1,46 +1,69 @@
 import bcrypt from "bcrypt";
 
+import { dbGetUserByEmail } from "../services/dbUserService"
 import dbPool from "../utils/dbInit";
-import {ifUserExists} from "../services/dbUserService"
 
 
-export const createUser = async (user) => {
+export const createUser = async (userData) => {
   // init db connection
   const dbConn = await dbPool.connect();
 
-  // check if email exists
-  const emailExists = await ifUserExists(dbConn, user.email);
-  if (emailExists) {
+  // check if user already exists
+  const user = (await dbGetUserByEmail(dbConn, userData.email)).rows[0];
+  if (user) {
     dbConn.end();
 
-    return 'exists';
+    return false;
   }
 
+  // create account in db
   try {
-    // create account in db
-    const query = await dbConn.query(
-      ` insert into _user (email, password, created_at, last_updated)
-      values ($1, $2, $3, $4)
-      on conflict (email) do nothing
-      returning user_id, email, created_at, last_updated
-      `,
-      [
-        user.email,
-        bcrypt.hashSync(user.password, 10),
-        user.createdAt,
-        user.lastUpdated,
-      ]
-    );
+    // create user
+    const user = (await dbCreateUser(dbConn, userData)).rows[0];
+
+    // add role to user
+    async () => {await dbAddUserRole(dbConn, user.id, userData.role);}
 
     // terminate db connection
     dbConn.end();
 
-    return query.rows;
+    return user;
 
   } catch (err) {
     console.error(`Error: ${err}`);
   }
 };
+
+const dbAddUserRole = (dbConn, userId, role) => {
+  dbConn.query(
+    `
+    insert into _user_role (user_id, role)
+    values (
+      ${userId},
+      '${role}'
+    )
+    on conflict (user_id) do update
+    set role = excluded.role
+    `
+  );
+}
+
+const dbCreateUser = (dbConn, userData) => {
+  return dbConn.query(
+    `
+    insert into _user (email, password, created_at, last_updated)
+    values ($1, $2, $3, $4)
+    on conflict (email) do nothing
+    returning user_id, email, created_at, last_updated
+    `,
+    [
+      userData.email,
+      bcrypt.hashSync(userData.password, 10),
+      userData.createdAt,
+      userData.lastUpdated,
+    ]
+  );
+}
 
 export const getUsers = async () => {
   // init db connection

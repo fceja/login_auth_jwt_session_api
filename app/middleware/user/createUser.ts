@@ -6,10 +6,10 @@ import newUser from "../../models/newUser";
 export default async function createUserMW(req: Request, res: Response) {
   try {
     // create user
-    let user = new newUser(req.body);
-    user = await createUser(user);
+    const user_model = new newUser(req.body, 'user');
+    const user = await createUser(user_model);
 
-    if (user === 'exists') {
+    if (user === false) {
       res.status(200).json({ message: "Email exists"});
 
     } else {

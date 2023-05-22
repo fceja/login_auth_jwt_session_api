@@ -2,39 +2,9 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"
 
 import { authConfig } from "../config/authConfig";
+import { dbGetUserByEmail } from "../services/dbUserService"
 import dbPool from "../utils/dbInit";
-import { ifUserExists } from "../services/dbUserService"
 
-export const loginAuth = async (user, req, res) => {
-  // init db connection
-  const dbConn = await dbPool.connect();
-
-  // check if email already exists
-  const emailExists = await ifUserExists(dbConn, user.email);
-  if (!emailExists) {
-    // email exists, terminate db connection
-    dbConn.end();
-
-    return false;
-  }
-
-  // query db with user email
-  const query = await dbConn.query(
-    `select * from _user where email='${user.email}'`
-  );
-
-  // check if password is valid
-  const isPassValid = bcrypt.compareSync(user.password, query.rows[0].password);
-  if (!isPassValid) {
-
-    return false;
-  }
-
-  // get session jwt token
-  req.session.token = exports.getSessionToken(req, user);
-
-  return true;
-};
 
 export const getSessionToken = (req, user) => {
   // assign jwt token
@@ -43,6 +13,33 @@ export const getSessionToken = (req, user) => {
   });
 
   return token;
+};
+
+export const loginAuth = async (userData, req, res) => {
+  // init db connection
+  const dbConn = await dbPool.connect();
+
+  // get existing user
+  const user = (await dbGetUserByEmail(dbConn, userData.email)).rows[0];
+  if (!user) {
+    dbConn.end();
+
+    return false;
+  }
+
+  // check if password is valid
+  const isPassValid = bcrypt.compareSync(userData.password, user.password);
+  if (!isPassValid) {
+
+    return false;
+  }
+
+  // TODO: get role
+
+  // get session jwt token
+  req.session.token = exports.getSessionToken(req, userData);
+
+  return true;
 };
 
 export const validateJwtToken = (req) => {
