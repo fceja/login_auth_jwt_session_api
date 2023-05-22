@@ -1,6 +1,5 @@
 import bcrypt from "bcrypt";
 
-import { dbGetUserByEmail } from "../services/dbUserService"
 import dbPool from "../utils/dbInit";
 
 
@@ -64,6 +63,17 @@ const dbCreateUser = (dbConn, userData) => {
     ]
   );
 }
+
+const dbGetUserByEmail = (dbConn, email) => {
+  return dbConn.query(
+    `
+    select *
+    from _user t1
+    left join _user_role t2 on t1.user_id = t2.user_id
+    where t1.email='${email}'
+    `
+    );
+  }
 
 export const getUsers = async () => {
   // init db connection
