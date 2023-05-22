@@ -1,8 +1,8 @@
 import bodyParser from "body-parser";
-import cookieSession from "cookie-session"
 import cors from "cors";
 import dotenv from "dotenv";
 import express, { Application } from "express";
+import session from "express-session";
 
 import router from "./routes/routes";
 
@@ -14,9 +14,11 @@ dotenv.config()
 app.use(bodyParser.json());
 app.use(cors());
 app.use(
-  cookieSession({
+  session({
     name: "app-session",
     secret: process.env.COOKIE_SECRET,
+    resave: false,
+    saveUninitialized: false,
     httpOnly: true
   })
 );
