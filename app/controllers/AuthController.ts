@@ -15,17 +15,6 @@ const dbGetUserByEmailWithRole = (dbConn, email) => {
     );
 }
 
-const dbGetUserRole = (dbConn, email) => {
-  return dbConn.query(
-    `
-    select role
-    from _user t1
-    join _user_role t2 on t1.user_id = t2.user_id
-    where t1.email='${email}'
-    `
-  );
-}
-
 export const getSessionToken = (req, user) => {
   // assign jwt token
   const token = jwt.sign({ id: user.id }, authConfig.secret, {
@@ -39,7 +28,7 @@ export const loginAuth = async (userData, req, res) => {
   // init db connection
   const dbConn = await dbPool.connect();
 
-  // get existing user
+  // get existing user and role
   const retUser = (await dbGetUserByEmailWithRole(dbConn, userData.email)).rows[0];
   if (!retUser) {
     dbConn.end();
@@ -54,11 +43,8 @@ export const loginAuth = async (userData, req, res) => {
     return false;
   }
 
-  // get user role
-  const retUserRole = (await dbGetUserRole(dbConn, userData.email)).rows[0]
-  req.session.userRole = JSON.parse(JSON.stringify(retUserRole)).role;
-
-  // get session jwt token
+  // store user role and token
+  req.session.userRole = JSON.parse(JSON.stringify(retUser)).role;
   req.session.token = exports.getSessionToken(req, userData);
 
   return true;
