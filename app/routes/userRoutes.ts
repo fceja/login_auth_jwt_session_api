@@ -11,6 +11,12 @@ usersRouter.get(
   [midW.authRequireAdmin, midW.authValidateJwtToken, midW.authRefreshJwtToken],
   midW.userGetUsers
 );
+
+usersRouter.get(
+  "/getUser",
+  [ midW.authValidateJwtToken, midW.authRefreshJwtToken],
+  midW.userGetUser
+);
 //#endregion - AUTH REQ
 
 //#region - NO AUTH REQ
