@@ -1,3 +1,4 @@
+import assert from "assert";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"
 
@@ -15,9 +16,13 @@ const dbGetUserByEmailWithRole = (dbConn, email) => {
     );
 }
 
-export const getSessionToken = (req, user) => {
+export const getSessionToken = (req, email, userId) => {
   // assign jwt token
-  const token = jwt.sign({ id: user.id }, authConfig.secret, {
+  const payload = {
+    email: email,
+    userId: userId,
+  }
+  const token = jwt.sign(payload, authConfig.secret, {
     expiresIn: 10, // 10 secs
   });
 
@@ -43,13 +48,17 @@ export const loginAuth = async (userData, req, res) => {
     return false;
   }
 
-  // store user role and token
+  // store user data and token
+  req.session.userId = JSON.parse(JSON.stringify(retUser)).user_id;
+  req.session.email = JSON.parse(JSON.stringify(retUser)).email;
   req.session.userRole = JSON.parse(JSON.stringify(retUser)).role;
-  req.session.token = exports.getSessionToken(req, userData);
+  req.session.token = exports.getSessionToken(req, req.session.email, req.session.userId);
 
   return true;
 };
 
 export const validateJwtToken = (req) => {
-  jwt.verify(req.session.token, authConfig.secret);
+  const decoded = jwt.verify(req.session.token, authConfig.secret);
+  assert(decoded.userId === req.session.userId, "Expected id's to match but did not.")
+  assert(decoded.email === req.session.email, "Expected emails's to match but did not.")
 }
