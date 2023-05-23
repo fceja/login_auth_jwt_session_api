@@ -75,6 +75,27 @@ const dbGetUserByEmail = (dbConn, email) => {
     );
   }
 
+export const getUser = async (userId) => {
+  // init db connection
+  const dbConn = await dbPool.connect();
+
+  // excecute query
+  const data = await dbConn.query(
+    `
+    select _user.user_id, email, created_at, last_updated, role
+    from _user
+    left join _user_role
+    on _user.user_id = _user_role.user_id
+    where _user.user_id = ${userId}
+    `
+  );
+
+  // end db connection
+  dbConn.end();
+
+  return data.rows[0]
+}
+
 export const getUsers = async () => {
   // init db connection
   const dbConn = await dbPool.connect();
