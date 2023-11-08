@@ -1,20 +1,19 @@
-import loginAuthMW  from "../middleware/auth/loginAuth";
-import refreshJwtTokenMW from '../middleware/auth/refresJwtToken';
-import requireAdminMW from "../middleware/auth/requireAdmin";
-import validateJwtTokenMW from '../middleware/auth/validateJwtToken';
-import someHandlerMW from "../middleware/test/testHandler";
-import createUserMW from "../middleware/user/createUser";
-import getUserMW from "../middleware/user/getUser";
-import getUsersMW from "../middleware/user/getUsers";
-
+import loginAuthMW from "./auth/LoginAuth";
+import refreshJwtTokenMW from "./auth/RefresJwtToken";
+import requireAdminMW from "./auth/RequireAdmin";
+import validateJwtTokenMW from "./auth/ValidateJwtToken";
+import someHandlerMW from "./test/TestHandler";
+import createUserMW from "./user/CreateUser";
+import getUserMW from "./user/GetUser";
+import getUsersMW from "./user/GetUsers";
 
 export const midW = {
-    authLoginAuth:loginAuthMW,
-    authRefreshJwtToken:refreshJwtTokenMW,
-    authRequireAdmin:requireAdminMW,
-    authValidateJwtToken:validateJwtTokenMW,
-    testSomeHandler:someHandlerMW,
-    userCreateUser:createUserMW,
-    userGetUser:getUserMW,
-    userGetUsers:getUsersMW
+  authLoginAuth: loginAuthMW,
+  authRefreshJwtToken: refreshJwtTokenMW,
+  authRequireAdmin: requireAdminMW,
+  authValidateJwtToken: validateJwtTokenMW,
+  testSomeHandler: someHandlerMW,
+  userCreateUser: createUserMW,
+  userGetUser: getUserMW,
+  userGetUsers: getUsersMW,
 };

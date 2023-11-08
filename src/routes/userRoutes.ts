@@ -1,6 +1,6 @@
 import express from "express";
 
-import { midW } from "../middleware";
+import { midW } from "../middleware/Index";
 
 const usersRouter = express.Router();
 
@@ -14,7 +14,7 @@ usersRouter.get(
 
 usersRouter.get(
   "/getUser",
-  [ midW.authValidateJwtToken, midW.authRefreshJwtToken],
+  [midW.authValidateJwtToken, midW.authRefreshJwtToken],
   midW.userGetUser
 );
 //#endregion - AUTH REQ

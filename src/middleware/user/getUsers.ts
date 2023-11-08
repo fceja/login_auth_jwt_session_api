@@ -7,7 +7,6 @@ export default async function getUsersMW(req: Request, res: Response) {
     const users = await getUsers();
 
     res.status(200).json({ "from GET /user/getUsers": users });
-
   } catch (err) {
     console.error(err);
 

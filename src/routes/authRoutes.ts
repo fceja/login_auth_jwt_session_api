@@ -1,6 +1,6 @@
 import express from "express";
 
-import { midW } from "../middleware";
+import { midW } from "../middleware/Index";
 
 const router = express.Router();
 

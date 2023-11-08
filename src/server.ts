@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import express, { Application } from "express";
 import session from "express-session";
 
-import router from "./routes/routes";
+import router from "./routes/Routes";
 
 const port = 3000;
 const app: Application = express();
