@@ -1,4 +1,10 @@
-export default function requireAdminMW(req, res, next) {
+import { NextFunction, Request, Response } from "express";
+
+export default function requireAdminMW(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   if (req.session.userRole === "admin") {
     next();
   } else {

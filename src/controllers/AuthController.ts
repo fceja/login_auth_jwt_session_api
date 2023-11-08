@@ -1,6 +1,7 @@
 import assert from "assert";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { Request, Response } from "express";
 
 import { authConfig } from "../config/AuthConfig";
 import dbPool from "../utils/DbInit";
@@ -16,7 +17,7 @@ const dbGetUserByEmailWithRole = (dbConn, email) => {
   );
 };
 
-export const getSessionToken = (req, email, userId) => {
+export const getSessionToken = (req: Request, email, userId) => {
   // assign jwt token
   const payload = {
     email: email,
@@ -29,7 +30,7 @@ export const getSessionToken = (req, email, userId) => {
   return token;
 };
 
-export const loginAuth = async (userData, req, res) => {
+export const loginAuth = async (userData, req: Request, res: Response) => {
   // init db connection
   const dbConn = await dbPool.connect();
 
@@ -61,7 +62,7 @@ export const loginAuth = async (userData, req, res) => {
   return true;
 };
 
-export const validateJwtToken = (req) => {
+export const validateJwtToken = (req: Request) => {
   const decoded = jwt.verify(req.session.token, authConfig.secret);
   assert(
     decoded.userId === req.session.userId,
