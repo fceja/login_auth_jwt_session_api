@@ -6,6 +6,9 @@ interface UserInterfaceType {
 class User {
   email: string;
   password: string;
+  role: string;
+  createdAt: string;
+  lastUpdated: string;
 
   constructor({ email, password }: UserInterfaceType) {
     this.email = email;
