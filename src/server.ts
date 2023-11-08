@@ -9,7 +9,7 @@ import router from "./routes/routes";
 const port = 3000;
 const app: Application = express();
 
-dotenv.config()
+dotenv.config();
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -19,7 +19,7 @@ app.use(
     secret: process.env.COOKIE_SECRET,
     resave: false,
     saveUninitialized: false,
-    httpOnly: true
+    httpOnly: true,
   })
 );
 
