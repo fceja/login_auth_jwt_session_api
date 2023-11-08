@@ -1,5 +1,5 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 
-dotenv.config()
+dotenv.config();
 
-export const authConfig = { secret:process.env.AUTH_SECRET }
+export const authConfig = { secret: process.env.AUTH_SECRET };
