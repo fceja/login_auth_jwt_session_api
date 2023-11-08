@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 
 import { getUsers } from "../../controllers/UserController";
 
-export default async function getUsersMW(req: Request, res: Response) {
+export default async function getUsersMW(res: Response) {
   try {
     const users = await getUsers();
 

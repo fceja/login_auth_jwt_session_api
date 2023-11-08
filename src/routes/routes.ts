@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Response } from "express";
 
 import userRouter from "./UserRoutes";
 import authRouter from "./AuthRoutes";
@@ -8,7 +8,7 @@ import testRouter from "./TestRoutes";
 const router = express.Router();
 
 // routes
-router.get("/", (req, res) => {
+router.get("/", (res: Response) => {
   res.json({ message: "public - index" });
 });
 router.use("/test", testRouter);
