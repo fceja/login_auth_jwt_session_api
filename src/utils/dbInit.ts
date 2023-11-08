@@ -6,7 +6,7 @@ const dbPool = new Pool({
   host: dbConfig.HOST,
   database: dbConfig.DB_NAME,
   password: dbConfig.PASSWORD,
-  port: dbConfig.PORT,
+  port: parseInt(dbConfig.PORT),
 });
 
 export default dbPool;
