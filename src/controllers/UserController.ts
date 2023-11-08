@@ -1,15 +1,17 @@
 import bcrypt from "bcrypt";
+import { PoolClient } from "pg";
 
 import dbPool from "../utils/DbInit";
+import User from "../models/User";
 
-export const createUser = async (userData) => {
+export const createUser = async (userData: User) => {
   // init db connection
   const dbConn = await dbPool.connect();
 
   // check if user already exists
   const user = (await dbGetUserByEmail(dbConn, userData.email)).rows[0];
   if (user) {
-    dbConn.end();
+    dbConn.release();
 
     return false;
   }
@@ -25,7 +27,7 @@ export const createUser = async (userData) => {
     };
 
     // terminate db connection
-    dbConn.end();
+    dbConn.release();
 
     return user;
   } catch (err) {
@@ -33,7 +35,7 @@ export const createUser = async (userData) => {
   }
 };
 
-const dbAddUserRole = (dbConn, userId, role) => {
+const dbAddUserRole = (dbConn: PoolClient, userId: string, role: string) => {
   dbConn.query(
     `
     insert into _user_role (user_id, role)
@@ -47,7 +49,7 @@ const dbAddUserRole = (dbConn, userId, role) => {
   );
 };
 
-const dbCreateUser = (dbConn, userData) => {
+const dbCreateUser = (dbConn: PoolClient, userData: User) => {
   return dbConn.query(
     `
     insert into _user (email, password, created_at, last_updated)
@@ -64,7 +66,7 @@ const dbCreateUser = (dbConn, userData) => {
   );
 };
 
-const dbGetUserByEmail = (dbConn, email) => {
+const dbGetUserByEmail = (dbConn: PoolClient, email: string) => {
   return dbConn.query(
     `
     select *
@@ -75,7 +77,7 @@ const dbGetUserByEmail = (dbConn, email) => {
   );
 };
 
-export const getUser = async (userId) => {
+export const getUser = async (userId: string) => {
   // init db connection
   const dbConn = await dbPool.connect();
 
@@ -91,7 +93,7 @@ export const getUser = async (userId) => {
   );
 
   // end db connection
-  dbConn.end();
+  dbConn.release();
 
   return data.rows[0];
 };
@@ -104,7 +106,7 @@ export const getUsers = async () => {
   const data = await dbConn.query("select * from _user");
 
   // end db connection
-  dbConn.end();
+  dbConn.release();
 
   return data.rows;
 };
