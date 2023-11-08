@@ -18,5 +18,6 @@
       "@utils/*": ["./src/utils/*"]
     }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "src/custom.d.ts"],
+  "typeRoots": ["./node_modules/@types", "./src/types"]
 }
