@@ -11,9 +11,10 @@ export default function validateJwtTokenMW(
     validateJwtToken(req);
     next();
   } catch (err) {
-    // invalid jwt
-    return res.status(401).send({
-      message: "Token error",
-    });
+    console.error(err);
   }
+
+  return res.status(401).send({
+    message: "Token error",
+  });
 }
