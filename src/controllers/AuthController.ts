@@ -4,9 +4,9 @@ import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { PoolClient } from "pg";
 
-import _SessionData from "../types/express-session/Index";
-import { authConfig } from "../config/AuthConfig";
+import CONFIG_FILE from "../config/Config";
 import dbPool from "../utils/DbInit";
+import _SessionData from "../types/express-session/Index";
 import User from "../models/User";
 
 export const loginAuth = async (
@@ -73,11 +73,15 @@ export const getSessionToken = (email: string, userId: string) => {
     userId: userId,
   };
   const jwtSignOptions = {
-    expiresIn: parseInt(process.env.JWT_TOKEN_EXPIRY),
+    expiresIn: parseInt(CONFIG_FILE.AUTH_JWT_TOKEN_EXPIRY),
   };
 
   // generate jwt token with expiry
-  const jwtToken = jwt.sign(jwtSignPayload, authConfig.secret, jwtSignOptions);
+  const jwtToken = jwt.sign(
+    jwtSignPayload,
+    CONFIG_FILE.AUTH_JWT_SECRET_KEY,
+    jwtSignOptions
+  );
 
   return jwtToken;
 };
@@ -96,7 +100,10 @@ export const getSessionToken = (email: string, userId: string) => {
  **/
 export const validateJwtToken = (req: Request) => {
   try {
-    const decoded = jwt.verify(req.session.token, authConfig.secret);
+    const decoded = jwt.verify(
+      req.session.token,
+      CONFIG_FILE.AUTH_JWT_SECRET_KEY
+    );
 
     if (decoded instanceof Object) {
       assert(

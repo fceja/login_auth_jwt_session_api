@@ -1,12 +1,12 @@
-import { dbConfig } from "../config/DbConfig";
+import CONFIG_FILE from "../config/Config";
 import { Pool } from "pg";
 
 const dbPool = new Pool({
-  host: dbConfig.HOST,
-  database: dbConfig.DB_NAME,
-  user: dbConfig.USER,
-  password: dbConfig.PASSWORD,
-  port: parseInt(dbConfig.PORT),
+  host: CONFIG_FILE.DB_HOST,
+  database: CONFIG_FILE.DB_NAME,
+  user: CONFIG_FILE.DB_USER,
+  password: CONFIG_FILE.DB_PASSWORD,
+  port: parseInt(CONFIG_FILE.DB_PORT),
 });
 
 export default dbPool;

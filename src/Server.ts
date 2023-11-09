@@ -1,22 +1,20 @@
 import bodyParser from "body-parser";
 import cors from "cors";
-import dotenv from "dotenv";
 import express, { Application } from "express";
 import session from "express-session";
 
+import CONFIG_FILE from "./config/Config";
 import router from "./routes/Routes";
 
-const port = 3000;
+const port = CONFIG_FILE.SERVER_PORT;
 const app: Application = express();
-
-dotenv.config();
 
 app.use(bodyParser.json());
 app.use(cors());
 app.use(
   session({
     name: "app-session",
-    secret: process.env.COOKIE_SECRET,
+    secret: CONFIG_FILE.SESSION_COOKIE_SECRET_KEY,
     resave: false,
     saveUninitialized: false,
   })
