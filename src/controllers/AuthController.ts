@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { PoolClient } from "pg";
 
-import _SessionData from "../types/express-session/index";
+import _SessionData from "../types/express-session/Index";
 import { authConfig } from "../config/AuthConfig";
 import dbPool from "../utils/DbInit";
 import User from "../models/User";
