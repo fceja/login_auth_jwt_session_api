@@ -4,7 +4,7 @@ import express, { Application } from "express";
 import session from "express-session";
 
 import CONFIG_FILE from "./config/Config";
-import router from "./routes/Routes";
+import indexRouter from "./routers/IndexRouter";
 
 const port = CONFIG_FILE.SERVER_PORT;
 const app: Application = express();
@@ -21,7 +21,7 @@ app.use(
 );
 
 // routes router
-app.use("/", router);
+app.use("/", indexRouter);
 
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
