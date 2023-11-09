@@ -56,13 +56,13 @@ const dbGetUserByEmailWithRole = (dbConn: PoolClient, email: string) => {
 
 /**
  *
- * @param {string} email - User email for token generation
- * @param {string} userId - User id for token generation
- * @returns {string} jwtToken - Generated JWT token
+ * @param {string} email - User email for token generation.
+ * @param {string} userId - User id for token generation.
  *
- * - Generates JWT token with an expiry
- * - Expiry resolved from env var
- * - Returns generaetd JWT token
+ * @returns {string} jwtToken - Generated JWT token.
+ *
+ * @description
+ * - Generates and returns JWT token with an expiry.
  *
  **/
 
