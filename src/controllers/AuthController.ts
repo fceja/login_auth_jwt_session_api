@@ -11,7 +11,7 @@ import User from "../models/User";
 export const loginAuth = async (
   userData: User,
   req: Request,
-  _resp: Response
+  _res: Response
 ) => {
   // init db connection
   const dbConn = await dbPool.connect();
@@ -34,8 +34,8 @@ export const loginAuth = async (
   req.session.userId = JSON.parse(JSON.stringify(retUser)).user_id;
   req.session.email = JSON.parse(JSON.stringify(retUser)).email;
   req.session.userRole = JSON.parse(JSON.stringify(retUser)).role;
+
   req.session.token = exports.getSessionToken(
-    req,
     req.session.email,
     req.session.userId
   );
@@ -60,6 +60,7 @@ export const getSessionToken = (email: string, userId: string) => {
     email: email,
     userId: userId,
   };
+
   const token = jwt.sign(payload, authConfig.secret, {
     expiresIn: 10, // 10 secs
   });
