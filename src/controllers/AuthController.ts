@@ -54,18 +54,32 @@ const dbGetUserByEmailWithRole = (dbConn: PoolClient, email: string) => {
   );
 };
 
+/**
+ *
+ * @param {string} email - User email for token generation
+ * @param {string} userId - User id for token generation
+ * @returns {string} jwtToken - Generated JWT token
+ *
+ * - Generates JWT token with an expiry
+ * - Expiry resolved from env var
+ * - Returns generaetd JWT token
+ *
+ **/
+
 export const getSessionToken = (email: string, userId: string) => {
-  // assign jwt token
-  const payload = {
+  // define vars for 'jwt.sign' function
+  const jwtSignPayload = {
     email: email,
     userId: userId,
   };
+  const jwtSignOptions = {
+    expiresIn: parseInt(process.env.JWT_TOKEN_EXPIRY),
+  };
 
-  const token = jwt.sign(payload, authConfig.secret, {
-    expiresIn: 10, // 10 secs
-  });
+  // generate jwt token with expiry
+  const jwtToken = jwt.sign(jwtSignPayload, authConfig.secret, jwtSignOptions);
 
-  return token;
+  return jwtToken;
 };
 
 export const validateJwtToken = (req: Request) => {

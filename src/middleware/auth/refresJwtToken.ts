@@ -9,6 +9,7 @@ import { getSessionToken } from "../../controllers/AuthController";
  *
  * - Assigns token generated from 'getSessionToken' function to session
  * - Invokes callback function
+ *
  **/
 
 const refreshJwtTokenMW = (
