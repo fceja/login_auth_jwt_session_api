@@ -1,11 +1,11 @@
-import loginAuthMW from "./auth/LoginAuth";
-import refreshJwtTokenMW from "./auth/RefresJwtToken";
-import requireAdminMW from "./auth/RequireAdmin";
-import validateJwtTokenMW from "./auth/ValidateJwtToken";
-import someHandlerMW from "./test/TestHandler";
-import createUserMW from "./user/CreateUser";
-import getUserMW from "./user/GetUser";
-import getUsersMW from "./user/GetUsers";
+import loginAuthMW from "./auth/LoginAuthMW";
+import refreshJwtTokenMW from "./auth/RefresJwtTokenMW";
+import requireAdminMW from "./auth/RequireAdminMW";
+import validateJwtTokenMW from "./auth/ValidateJwtTokenMW";
+import someHandlerMW from "./test/TestHandlerMW";
+import createUserMW from "./user/CreateUserMW";
+import getUserMW from "./user/GetUserMW";
+import getUsersMW from "./user/GetUsersMW";
 
 export const midW = {
   authLoginAuth: loginAuthMW,
