@@ -19,7 +19,6 @@ app.use(
     secret: process.env.COOKIE_SECRET,
     resave: false,
     saveUninitialized: false,
-    httpOnly: true,
   })
 );
 
