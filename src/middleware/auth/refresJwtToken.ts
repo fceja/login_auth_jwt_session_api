@@ -3,9 +3,9 @@ import { getSessionToken } from "../../controllers/AuthController";
 
 /**
  *
- * @param req: Request
- * @param _res: Response
- * @param next: NextFunction
+ * @param {Request} req - Express Request object.
+ * @param {Response} _res - Express Response object (not used in this middleware).
+ * @param {NextFunction} next - Express NextFunction for invoking the next middleware.
  *
  * - Assigns token generated from 'getSessionToken' function to session
  * - Invokes callback function
