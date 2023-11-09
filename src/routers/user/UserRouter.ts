@@ -1,27 +1,27 @@
 import express from "express";
 
-import { midW } from "../../middleware/Index";
+import createUserMW from "../../middleware/user/CreateUserMW";
+import getUserMW from "../../middleware/user/GetUserMW";
+import getUsersMW from "../../middleware/user/GetUsersMW";
+import refreshJwtTokenMW from "../../middleware/auth/RefresJwtTokenMW";
+import requireAdminMW from "../../middleware/auth/RequireAdminMW";
+import validateJwtTokenMW from "../../middleware/auth/ValidateJwtTokenMW";
 
 const usersRouter = express.Router();
 
-//#region - AUTH REQ
+// #region - AUTH REQ
 // GET
+usersRouter.get("/getUser", [validateJwtTokenMW, refreshJwtTokenMW], getUserMW);
 usersRouter.get(
   "/getUsers",
-  [midW.authRequireAdmin, midW.authValidateJwtToken, midW.authRefreshJwtToken],
-  midW.userGetUsers
+  [requireAdminMW, validateJwtTokenMW, refreshJwtTokenMW],
+  getUsersMW
 );
+// #endregion - AUTH REQ
 
-usersRouter.get(
-  "/getUser",
-  [midW.authValidateJwtToken, midW.authRefreshJwtToken],
-  midW.userGetUser
-);
-//#endregion - AUTH REQ
-
-//#region - NO AUTH REQ
+// #region - NO AUTH REQ
 // POST
-usersRouter.post("/create", midW.userCreateUser);
-//#endregion - NO AUTH REQ
+usersRouter.post("/create", createUserMW);
+// #endregion - NO AUTH REQ
 
 export default usersRouter;

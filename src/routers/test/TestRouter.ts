@@ -1,16 +1,14 @@
 import express from "express";
 
-import { midW } from "../../middleware/Index";
+import refreshJwtTokenMW from "../../middleware/auth/RefresJwtTokenMW";
+import validateJwtTokenMW from "../../middleware/auth/ValidateJwtTokenMW";
+import someHandlerMW from "../../middleware/test/TestHandlerMW";
 
 const testRouter = express.Router();
 
-//#region - AUTH REQ
+// #region - AUTH REQ
 // GET
-testRouter.get(
-  "/",
-  [midW.authValidateJwtToken, midW.authRefreshJwtToken],
-  midW.testSomeHandler
-);
-//#endregion - AUTH REQ
+testRouter.get("/", [validateJwtTokenMW, refreshJwtTokenMW], someHandlerMW);
+// #endregion - AUTH REQ
 
 export default testRouter;

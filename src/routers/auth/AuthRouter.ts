@@ -1,12 +1,12 @@
 import express from "express";
 
-import { midW } from "../../middleware/Index";
+import loginAuthMW from "../../middleware/auth/LoginAuthMW";
 
 const router = express.Router();
 
-//#region - NO AUTH REQ
+// #region - NO AUTH REQ
 // POST
-router.post("/login", midW.authLoginAuth);
-//#endregion - NO AUTH REQ
+router.post("/login", loginAuthMW);
+// #endregion - NO AUTH REQ
 
 export default router;
