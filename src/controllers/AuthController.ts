@@ -1,3 +1,4 @@
+import assert from "assert";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
@@ -65,7 +66,6 @@ const dbGetUserByEmailWithRole = (dbConn: PoolClient, email: string) => {
  * - Generates and returns JWT token with an expiry.
  *
  **/
-
 export const getSessionToken = (email: string, userId: string) => {
   // define vars for 'jwt.sign' function
   const jwtSignPayload = {
@@ -82,14 +82,39 @@ export const getSessionToken = (email: string, userId: string) => {
   return jwtToken;
 };
 
+/**
+ *
+ * @param {Request} req - Express Request object.
+ *
+ * @returns {boolean} true | false - Boolean result for JWT token validity.
+ *
+ * @description
+ * - Decodes and Verifies that the session JWT token is valid.
+ *  - If invalid, throws error and returns false.
+ *  - If valid, returns true.
+ *
+ **/
 export const validateJwtToken = (req: Request) => {
-  const decoded = jwt.verify(req.session.token, authConfig.secret);
-  assert(
-    decoded.userId === req.session.userId,
-    "Expected id's to match but did not."
-  );
-  assert(
-    decoded.email === req.session.email,
-    "Expected emails's to match but did not."
-  );
+  try {
+    const decoded = jwt.verify(req.session.token, authConfig.secret);
+
+    if (decoded instanceof Object) {
+      assert(
+        decoded.userId === req.session.userId,
+        "Expected id's to match but did not."
+      );
+      assert(
+        decoded.email === req.session.email,
+        "Expected emails's to match but did not."
+      );
+
+      return true;
+    } else {
+      console.log(`\n\nentered Erro`);
+      throw new Error();
+    }
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
 };

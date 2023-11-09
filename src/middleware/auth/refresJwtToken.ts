@@ -8,8 +8,8 @@ import { getSessionToken } from "../../controllers/AuthController";
  * @param {NextFunction} next - Express NextFunction for invoking the next middleware.
  *
  * @description
- * - Assigns token generated from 'getSessionToken' function to session
- * - Invokes callback function
+ * - Assigns token generated from 'getSessionToken' function to session.
+ * - Invokes callback function.
  *
  **/
 const refreshJwtTokenMW = (
