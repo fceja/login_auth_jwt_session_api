@@ -12,8 +12,8 @@ router.get("/", (_req: Request, res: Response) => {
   res.send({ message: "public - index" });
 });
 
-router.use("/test", testRouter);
 router.use("/auth", authRouter);
+router.use("/test", testRouter);
 router.use("/user", userRouter);
 
 export default router;
