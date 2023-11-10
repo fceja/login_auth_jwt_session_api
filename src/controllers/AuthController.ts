@@ -1,4 +1,3 @@
-import assert from "assert";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
@@ -9,6 +8,7 @@ import dbPool from "@utils/DbInit";
 import _SessionData from "@appTypes/express-session/Index";
 import UserModel from "@models/UserModel";
 
+// TODO - handle incorrect login gracefully
 export const loginAuth = async (req: Request, _res: Response) => {
   // parse user data from payload
   const payloadUserData = new UserModel(req.body);
@@ -91,44 +91,4 @@ export const getSessionToken = (email: string, userId: string) => {
   );
 
   return jwtToken;
-};
-
-/**
- *
- * @param {Request} req - Express Request object.
- *
- * @returns {boolean} true | false - Boolean result for JWT token validity.
- *
- * @description
- * - Decodes and Verifies that the session JWT token is valid.
- *  - If invalid, throws error and returns false.
- *  - If valid, returns true.
- *
- **/
-export const validateJwtToken = (req: Request) => {
-  try {
-    const decoded = jwt.verify(
-      req.session.token,
-      CONFIG_FILE.AUTH_JWT_SECRET_KEY
-    );
-
-    if (decoded instanceof Object) {
-      assert(
-        decoded.userId === req.session.userId,
-        "Expected id's to match but did not."
-      );
-      assert(
-        decoded.email === req.session.email,
-        "Expected emails's to match but did not."
-      );
-
-      return true;
-    } else {
-      console.log(`\n\nentered Erro`);
-      throw new Error();
-    }
-  } catch (error) {
-    console.error(error);
-    return false;
-  }
 };
