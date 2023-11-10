@@ -1,4 +1,4 @@
-export interface NewUserInterfaceType {
+export interface NewUserInterface {
   email: string;
   password: string;
   role: string;
@@ -6,7 +6,7 @@ export interface NewUserInterfaceType {
   lastUpdated: string;
 }
 
-export interface UserInterfaceType {
+export interface UserInterface {
   email: string;
   password: string;
 }

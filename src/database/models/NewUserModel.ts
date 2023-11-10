@@ -1,4 +1,4 @@
-import { NewUserInterfaceType } from "@appTypes/IndexTypes";
+import { NewUserInterface } from "@appTypes/IndexTypes";
 
 class NewUserModel {
   email: string;
@@ -7,7 +7,7 @@ class NewUserModel {
   createdAt: string;
   lastUpdated: string;
 
-  constructor({ email, password }: NewUserInterfaceType) {
+  constructor({ email, password }: NewUserInterface) {
     this.email = email;
     this.password = password;
     this.role = "user";

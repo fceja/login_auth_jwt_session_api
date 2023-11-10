@@ -1,4 +1,4 @@
-import { UserInterfaceType } from "@appTypes/IndexTypes";
+import { UserInterface } from "@appTypes/IndexTypes";
 
 class UserModel {
   email: string;
@@ -7,7 +7,7 @@ class UserModel {
   createdAt: string;
   lastUpdated: string;
 
-  constructor({ email, password }: UserInterfaceType) {
+  constructor({ email, password }: UserInterface) {
     this.email = email;
     this.password = password;
   }
