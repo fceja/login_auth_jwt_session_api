@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-export default function requireAdminMW(
+export default function requireAdminMidW(
   req: Request,
   res: Response,
   next: NextFunction

@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 
 import { createUser } from "@controllers/UserController";
-import NewUser from "@models/NewUser";
+import NewUserModel from "@models/NewUserModel";
 
-export default async function createUserMW(req: Request, res: Response) {
+export default async function createUserMidW(req: Request, res: Response) {
   try {
     // create user
-    const user_model = new NewUser(req.body);
+    const user_model = new NewUserModel(req.body);
     const user = await createUser(user_model);
 
     if (user === false) {

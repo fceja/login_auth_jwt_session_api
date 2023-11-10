@@ -12,7 +12,7 @@ import { getSessionToken } from "@controllers/AuthController";
  * - Invokes callback function.
  *
  **/
-const refreshJwtTokenMW = (
+const refreshJwtTokenMidW = (
   req: Request,
   _res: Response,
   next: NextFunction
@@ -22,4 +22,4 @@ const refreshJwtTokenMW = (
   next();
 };
 
-export default refreshJwtTokenMW;
+export default refreshJwtTokenMidW;

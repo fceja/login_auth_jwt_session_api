@@ -18,7 +18,7 @@ import { validateJwtToken } from "@controllers/AuthController";
  *  - If valid, passes request to next middleware function
  *
  **/
-const validateJwtTokenMW = (
+const validateJwtTokenMidW = (
   req: Request,
   res: Response,
   next: NextFunction
@@ -35,4 +35,4 @@ const validateJwtTokenMW = (
   return next();
 };
 
-export default validateJwtTokenMW;
+export default validateJwtTokenMidW;

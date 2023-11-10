@@ -7,11 +7,11 @@ import { PoolClient } from "pg";
 import CONFIG_FILE from "@configs/Config";
 import dbPool from "@utils/DbInit";
 import _SessionData from "@appTypes/express-session/Index";
-import User from "@models/User";
+import UserModel from "@models/UserModel";
 
 export const loginAuth = async (req: Request, _res: Response) => {
   // parse user data from payload
-  const payloadUserData = new User(req.body);
+  const payloadUserData = new UserModel(req.body);
 
   // init db connection
   const dbConn = await dbPool.connect();

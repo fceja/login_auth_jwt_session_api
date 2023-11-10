@@ -2,9 +2,9 @@ import bcrypt from "bcrypt";
 import { PoolClient } from "pg";
 
 import dbPool from "@utils/DbInit";
-import User from "@models/User";
+import UserModel from "@models/UserModel";
 
-export const createUser = async (userData: User) => {
+export const createUser = async (userData: UserModel) => {
   // init db connection
   const dbConn = await dbPool.connect();
 
@@ -49,7 +49,7 @@ const dbAddUserRole = (dbConn: PoolClient, userId: string, role: string) => {
   );
 };
 
-const dbCreateUser = (dbConn: PoolClient, userData: User) => {
+const dbCreateUser = (dbConn: PoolClient, userData: UserModel) => {
   return dbConn.query(
     `
     insert into _user (email, password, created_at, last_updated)

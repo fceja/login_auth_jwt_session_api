@@ -1,6 +1,6 @@
-import { NewUserInterfaceType } from "@appTypes/Index";
+import { NewUserInterfaceType } from "@appTypes/IndexTypes";
 
-class NewUser {
+class NewUserModel {
   email: string;
   password: string;
   role: string;
@@ -16,4 +16,4 @@ class NewUser {
   }
 }
 
-export default NewUser;
+export default NewUserModel;

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 import { loginAuth } from "@controllers/AuthController";
 
-export default async function loginAuthMW(req: Request, res: Response) {
+export default async function loginAuthMidW(req: Request, res: Response) {
   const authd = await loginAuth(req, res);
 
   if (!authd) {

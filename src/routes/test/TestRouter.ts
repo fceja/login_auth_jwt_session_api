@@ -1,8 +1,8 @@
 import express from "express";
 
 import * as testController from "@controllers/TestController";
-import refreshJwtTokenMW from "@middleware/auth/RefreshJwtTokenMW";
-import validateJwtTokenMW from "@middleware/auth/ValidateJwtTokenMW";
+import refreshJwtTokenMidW from "@middleware/auth/RefreshJwtTokenMidWare";
+import validateJwtTokenMidW from "@middleware/auth/ValidateJwtTokenMidWare";
 
 const testRouter = express.Router();
 
@@ -10,7 +10,7 @@ const testRouter = express.Router();
 // GET /test
 testRouter.get(
   "/",
-  [validateJwtTokenMW, refreshJwtTokenMW],
+  [validateJwtTokenMidW, refreshJwtTokenMidW],
   testController.getTestHandler
 );
 // #endregion - AUTH REQ
