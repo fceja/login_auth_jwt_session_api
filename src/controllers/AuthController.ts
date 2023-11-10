@@ -9,37 +9,44 @@ import dbPool from "@utils/DbInit";
 import _SessionData from "@appTypes/express-session/Index";
 import User from "@models/User";
 
-export const loginAuth = async (
-  userData: User,
-  req: Request,
-  _res: Response
-) => {
+export const loginAuth = async (req: Request, _res: Response) => {
+  // parse user data from payload
+  const payloadUserData = new User(req.body);
+
   // init db connection
   const dbConn = await dbPool.connect();
 
-  // get existing user and role
-  const retUser = (await dbGetUserByEmailWithRole(dbConn, userData.email))
-    .rows[0];
+  // get user data from db if it exists
+  const dbUserData = (
+    await dbGetUserByEmailWithRole(dbConn, payloadUserData.email)
+  ).rows[0];
 
-  if (!retUser) {
-    dbConn.release();
+  // terminate db connection
+  dbConn.release();
 
+  // verify db user returned
+  if (!dbUserData) {
     return false;
   }
 
-  // check if password is valid
-  const isPassValid = bcrypt.compareSync(userData.password, retUser.password);
+  // verify password is valid
+  const isPassValid = bcrypt.compareSync(
+    payloadUserData.password,
+    dbUserData.password
+  );
   if (!isPassValid) {
     return false;
   }
-  req.session.userId = JSON.parse(JSON.stringify(retUser)).user_id;
-  req.session.email = JSON.parse(JSON.stringify(retUser)).email;
-  req.session.userRole = JSON.parse(JSON.stringify(retUser)).role;
 
-  req.session.token = exports.getSessionToken(
-    req.session.email,
-    req.session.userId
-  );
+  // NOTE
+  // session data is not saved in the cookie itself, just the session id.
+  // session data is stored server-side.
+
+  // parse user data into session
+  req.session.userId = JSON.parse(JSON.stringify(dbUserData)).user_id;
+  req.session.email = JSON.parse(JSON.stringify(dbUserData)).email;
+  req.session.userRole = JSON.parse(JSON.stringify(dbUserData)).role;
+  req.session.token = getSessionToken(req.session.email, req.session.userId);
 
   return true;
 };
