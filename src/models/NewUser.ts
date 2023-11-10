@@ -1,10 +1,4 @@
-interface NewUserInterfaceType {
-  email: string;
-  password: string;
-  role: string;
-  createdAt: string;
-  lastUpdated: string;
-}
+import { NewUserInterfaceType } from "@appTypes/Index";
 
 class NewUser {
   email: string;

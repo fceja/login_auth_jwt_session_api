@@ -1,7 +1,4 @@
-interface UserInterfaceType {
-  email: string;
-  password: string;
-}
+import { UserInterfaceType } from "@appTypes/Index";
 
 class User {
   email: string;
