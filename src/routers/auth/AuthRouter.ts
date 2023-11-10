@@ -1,6 +1,6 @@
 import express from "express";
 
-import loginAuthMW from "../../middleware/auth/LoginAuthMW";
+import loginAuthMW from "@middleware/auth/LoginAuthMW";
 
 const router = express.Router();
 

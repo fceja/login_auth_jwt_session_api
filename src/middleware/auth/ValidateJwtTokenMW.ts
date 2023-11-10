@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { validateJwtToken } from "../../controllers/AuthController";
+import { validateJwtToken } from "@controllers/AuthController";
 
 /**
  *

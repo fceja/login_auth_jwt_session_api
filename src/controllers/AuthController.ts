@@ -4,10 +4,10 @@ import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { PoolClient } from "pg";
 
-import CONFIG_FILE from "../config/Config";
-import dbPool from "../utils/DbInit";
-import _SessionData from "../types/express-session/Index";
-import User from "../models/User";
+import CONFIG_FILE from "@configs/Config";
+import dbPool from "@utils/DbInit";
+import _SessionData from "@appTypes/express-session/Index";
+import User from "@models/User";
 
 export const loginAuth = async (
   userData: User,

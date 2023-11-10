@@ -11,10 +11,16 @@
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "resolveJsonModule": true,
     "paths": {
-      "@/*": ["./src/*"],
-      "@routes/*": ["./src/routes/*"],
+      "@/*": ["./*"],
+      "@configs/*": ["./src/configs/*"],
+      "@controllers/*": ["./src/controllers/*"],
+      "@middleware/*": ["./src/middleware/*"],
+      "@models/*": ["./src/models/*"],
       "@routers/*": ["./src/routers/*"],
+      "@routes/*": ["./src/routes/*"],
+      "@appTypes/*": ["./src/types/*"],
       "@utils/*": ["./src/utils/*"]
     }
   }

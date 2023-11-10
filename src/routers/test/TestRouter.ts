@@ -1,8 +1,8 @@
 import express from "express";
 
-import refreshJwtTokenMW from "../../middleware/auth/RefresJwtTokenMW";
-import testHandler from "../../routes/test/TestHandler";
-import validateJwtTokenMW from "../../middleware/auth/ValidateJwtTokenMW";
+import refreshJwtTokenMW from "@middleware/auth/RefresJwtTokenMW";
+import testHandler from "@routes/test/TestHandler";
+import validateJwtTokenMW from "@middleware/auth/ValidateJwtTokenMW";
 
 const testRouter = express.Router();
 

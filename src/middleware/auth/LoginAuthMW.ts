@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
-import User from "../../models/User";
-import { loginAuth } from "../../controllers/AuthController";
+import User from "@models/User";
+import { loginAuth } from "@controllers/AuthController";
 
 export default async function loginAuthMW(req: Request, res: Response) {
   const user = new User(req.body);

@@ -3,8 +3,8 @@ import cors from "cors";
 import express, { Application } from "express";
 import session from "express-session";
 
-import CONFIG_FILE from "./config/Config";
-import indexRouter from "./routers/IndexRouter";
+import CONFIG_FILE from "@configs/Config";
+import indexRouter from "@routers/IndexRouter";
 
 const port = CONFIG_FILE.SERVER_PORT;
 const app: Application = express();

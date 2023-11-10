@@ -1,8 +1,8 @@
 import express, { Request, Response } from "express";
 
-import userRouter from "./user/UserRouter";
-import authRouter from "./auth/AuthRouter";
-import testRouter from "./test/TestRouter";
+import userRouter from "@routers/user/UserRouter";
+import authRouter from "@routers/auth/AuthRouter";
+import testRouter from "@routers/test/TestRouter";
 
 // init
 const indexRouter = express.Router();

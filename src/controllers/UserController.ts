@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt";
 import { PoolClient } from "pg";
 
-import dbPool from "../utils/DbInit";
-import User from "../models/User";
+import dbPool from "@utils/DbInit";
+import User from "@models/User";
 
 export const createUser = async (userData: User) => {
   // init db connection

@@ -1,6 +1,6 @@
 import { Response } from "express";
 
-import { getUsers } from "../../controllers/UserController";
+import { getUsers } from "@controllers/UserController";
 
 export default async function getUsersMW(res: Response) {
   try {

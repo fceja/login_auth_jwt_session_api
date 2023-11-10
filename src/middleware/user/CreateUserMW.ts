@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
-import { createUser } from "../../controllers/UserController";
-import NewUser from "../../models/NewUser";
+import { createUser } from "@controllers/UserController";
+import NewUser from "@models/NewUser";
 
 export default async function createUserMW(req: Request, res: Response) {
   try {
