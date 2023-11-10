@@ -3,7 +3,7 @@ import express from "express";
 import createUserMW from "@middleware/user/CreateUserMW";
 import getUserMW from "@middleware/user/GetUserMW";
 import getUsersMW from "@middleware/user/GetUsersMW";
-import refreshJwtTokenMW from "@middleware/auth/RefresJwtTokenMW";
+import refreshJwtTokenMW from "@/src/middleware/auth/RefreshJwtTokenMW";
 import requireAdminMW from "@middleware/auth/RequireAdminMW";
 import validateJwtTokenMW from "@middleware/auth/ValidateJwtTokenMW";
 
