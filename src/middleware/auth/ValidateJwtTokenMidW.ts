@@ -11,11 +11,11 @@ const decodeJwtToken = (req: Request) => {
       CONFIG_FILE.AUTH_JWT_SECRET_KEY
     );
 
-    return { decodedJwtToken: decodedToken };
+    return decodedToken;
   } catch (error) {
     console.error(error);
 
-    return { decodedJwtToken: null };
+    return null;
   }
 };
 
@@ -40,12 +40,12 @@ const validateJwtToken = (
         "Expected emails's to match but did not."
       );
 
-      return { isJwtTokenValid: true };
+      return true;
     } else {
       throw new Error();
     }
   } catch (error) {
-    return { isJwtTokenValid: false };
+    return false;
   }
 };
 
@@ -71,13 +71,13 @@ const validateJwtTokenMidW = (
   next: NextFunction
 ): Response | NextFunction | void => {
   // decode session jwt token
-  const { decodedJwtToken } = decodeJwtToken(req);
+  const decodedJwtToken = decodeJwtToken(req);
   if (!decodedJwtToken) {
     return returnErrorResponse(res);
   }
 
   // validate session jwt token
-  const { isJwtTokenValid } = validateJwtToken(req, decodedJwtToken);
+  const isJwtTokenValid = validateJwtToken(req, decodedJwtToken);
   if (!isJwtTokenValid) {
     return returnErrorResponse(res);
   }
