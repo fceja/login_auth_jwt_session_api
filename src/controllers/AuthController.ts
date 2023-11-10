@@ -1,14 +1,14 @@
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { PoolClient } from "pg";
 
-import CONFIG_FILE from "@configs/Config";
 import dbPool from "@utils/DbInit";
+import { getSessionTokenMidW } from "@middleware/auth/GetSessionTokenMidW";
 import _SessionData from "@appTypes/express-session/Index";
 import UserModel from "@models/UserModel";
 
 // TODO - handle incorrect login gracefully
+// TODO - refactor into smaller funcs
 export const loginAuth = async (req: Request, _res: Response) => {
   // parse user data from payload
   const payloadUserData = new UserModel(req.body);
@@ -38,15 +38,23 @@ export const loginAuth = async (req: Request, _res: Response) => {
     return false;
   }
 
-  // NOTE
-  // session data is not saved in the cookie itself, just the session id.
-  // session data is stored server-side.
+  /* NOTE */
+  /**
+   *
+   * - Session data is not saved in the cookie itself.
+   * - Only session id is saved in cookie.
+   *
+   * - Session data is stored server-side.
+   *
+   **/
 
   // parse user data into session
   req.session.userId = JSON.parse(JSON.stringify(dbUserData)).user_id;
   req.session.email = JSON.parse(JSON.stringify(dbUserData)).email;
   req.session.userRole = JSON.parse(JSON.stringify(dbUserData)).role;
-  req.session.token = getSessionToken(req.session.email, req.session.userId);
+
+  // get session jwt token
+  req.session.token = getSessionTokenMidW(req);
 
   return true;
 };
@@ -60,35 +68,4 @@ const dbGetUserByEmailWithRole = (dbConn: PoolClient, email: string) => {
     where t1.email='${email}' and t2.role is not NULL
     `
   );
-};
-
-/**
- *
- * @param {string} email - User email for token generation.
- * @param {string} userId - User id for token generation.
- *
- * @returns {string} jwtToken - Generated JWT token.
- *
- * @description
- * - Generates and returns JWT token with an expiry.
- *
- **/
-export const getSessionToken = (email: string, userId: string) => {
-  // define vars for 'jwt.sign' function
-  const jwtSignPayload = {
-    email: email,
-    userId: userId,
-  };
-  const jwtSignOptions = {
-    expiresIn: parseInt(CONFIG_FILE.AUTH_JWT_TOKEN_EXPIRY),
-  };
-
-  // generate jwt token with expiry
-  const jwtToken = jwt.sign(
-    jwtSignPayload,
-    CONFIG_FILE.AUTH_JWT_SECRET_KEY,
-    jwtSignOptions
-  );
-
-  return jwtToken;
 };

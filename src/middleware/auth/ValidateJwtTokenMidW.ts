@@ -55,7 +55,7 @@ const validateJwtToken = (
  * @param {Response} res - Express Response object.
  * @param {NextFunction} next - Express NextFunction.
  *
- * @returns {Response|NextFunction}
+ * @returns {Response|NextFunction|void}
  *
  * @description
  * - Decodes and Verifies that the session JWT token is valid.
@@ -69,7 +69,7 @@ const validateJwtTokenMidW = (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Response | NextFunction | void => {
   // decode session jwt token
   const { decodedJwtToken } = decodeJwtToken(req);
   if (!decodedJwtToken) {

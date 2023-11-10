@@ -1,14 +1,15 @@
 import { Request, Response, NextFunction } from "express";
-import { getSessionToken } from "@controllers/AuthController";
+
+import { getSessionTokenMidW } from "@middleware/auth/GetSessionTokenMidW";
 
 /**
  *
  * @param {Request} req - Express Request object.
- * @param {Response} _res - Express Response object (not used in this middleware).
+ * @param {Response} _res - Express Response object (not used).
  * @param {NextFunction} next - Express NextFunction for invoking the next middleware.
  *
  * @description
- * - Assigns token generated from 'getSessionToken' function to session.
+ * - Assigns session JWT token generated from 'getSessionTokenMW' function.
  * - Invokes callback function.
  *
  **/
@@ -17,7 +18,7 @@ const refreshJwtTokenMidW = (
   _res: Response,
   next: NextFunction
 ) => {
-  req.session.token = getSessionToken(req.session.email, req.session.userId);
+  req.session.token = getSessionTokenMidW(req);
 
   next();
 };
