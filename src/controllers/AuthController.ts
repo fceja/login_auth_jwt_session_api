@@ -7,37 +7,22 @@ import { getSessionTokenMidW } from "@middleware/auth/GetSessionTokenMidW";
 import _SessionData from "@appTypes/express-session/Index";
 import UserModel from "@models/UserModel";
 
-// TODO - handle incorrect login gracefully
-// TODO - refactor into smaller funcs
-export const loginAuth = async (req: Request, _res: Response) => {
-  // parse user data from payload
-  const payloadUserData = new UserModel(req.body);
-
+const getUserDataByEmailFromDb = async (userEmail: string) => {
   // init db connection
   const dbConn = await dbPool.connect();
 
   // get user data from db if it exists
-  const dbUserData = (
-    await dbGetUserByEmailWithRole(dbConn, payloadUserData.email)
+  const dbUserData: UserModel = (
+    await dbGetUserByEmailWithRole(dbConn, userEmail)
   ).rows[0];
 
   // terminate db connection
   dbConn.release();
 
-  // verify db user returned
-  if (!dbUserData) {
-    return false;
-  }
+  return dbUserData;
+};
 
-  // verify password is valid
-  const isPassValid = bcrypt.compareSync(
-    payloadUserData.password,
-    dbUserData.password
-  );
-  if (!isPassValid) {
-    return false;
-  }
-
+const parseUserDataToSession = (req: Request, storedUserData: UserModel) => {
   /* NOTE */
   /**
    *
@@ -49,12 +34,45 @@ export const loginAuth = async (req: Request, _res: Response) => {
    **/
 
   // parse user data into session
-  req.session.userId = JSON.parse(JSON.stringify(dbUserData)).user_id;
-  req.session.email = JSON.parse(JSON.stringify(dbUserData)).email;
-  req.session.userRole = JSON.parse(JSON.stringify(dbUserData)).role;
+  req.session.userId = JSON.parse(JSON.stringify(storedUserData)).user_id;
+  req.session.email = JSON.parse(JSON.stringify(storedUserData)).email;
+  req.session.userRole = JSON.parse(JSON.stringify(storedUserData)).role;
 
   // get session jwt token
   req.session.token = getSessionTokenMidW(req);
+};
+
+const validatePassword = (
+  payloadUserPass: string,
+  storedUserPass: string
+): boolean => {
+  return bcrypt.compareSync(payloadUserPass, storedUserPass);
+};
+
+// TODO - handle incorrect login gracefully
+export const loginAuth = async (req: Request, _res: Response) => {
+  // parse user data from payload
+  const payloadUserData = new UserModel(req.body);
+
+  // get user data from db
+  const storedUserData: UserModel = await getUserDataByEmailFromDb(
+    payloadUserData.email
+  );
+  if (!storedUserData) {
+    return false;
+  }
+
+  // verify password is valid
+  const isPassValid = validatePassword(
+    payloadUserData.password,
+    storedUserData.password
+  );
+  if (!isPassValid) {
+    return false;
+  }
+
+  // parse user data to session
+  parseUserDataToSession(req, storedUserData);
 
   return true;
 };
