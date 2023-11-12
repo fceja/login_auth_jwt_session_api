@@ -22,8 +22,9 @@ export const createUser = async (userData: UserModel) => {
     const user = (await dbCreateUser(dbConn, userData)).rows[0];
 
     // add role to user
+    // TODO - will need to separate this funct
     async () => {
-      await dbAddUserRole(dbConn, user.id, userData.role);
+      await dbAddUserRole(dbConn, user.id, "user");
     };
 
     // terminate db connection
