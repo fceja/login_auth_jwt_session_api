@@ -50,7 +50,7 @@ export abstract class BaseRepository<T>
 
   async find(item: T): Promise<T[]> {
     try {
-      let query = `SELECT * FROM "${this._tableName}"`;
+      let query = `SELECT * FROM ${this._tableName}`;
       let conditions = ` WHERE`;
 
       const columns = Object.keys(item);
@@ -59,13 +59,8 @@ export abstract class BaseRepository<T>
       let firstFilled = false;
       columns.forEach((column, index) => {
         if (values[index]) {
-          const firstCondition = !firstFilled ? "" : " AND";
-          const valueType =
-            typeof values[index] === "string"
-              ? `='${values[index]}'`
-              : `=${values[index]}`;
-
-          conditions += `${firstCondition} ${this._tableName}.${column}${valueType}`;
+          const condition = !firstFilled ? "" : " AND";
+          conditions += `${condition} ${this._tableName}.${column}='${values[index]}'`;
 
           firstFilled = true;
         }
