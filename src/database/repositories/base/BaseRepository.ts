@@ -39,15 +39,49 @@ export abstract class BaseRepository<T>
     }
     // throw new Error( "Method not implemented.");
   }
+
   update(id: string, item: T): Promise<boolean> {
     throw new Error("Method not implemented.");
   }
+
   delete(id: string): Promise<boolean> {
     throw new Error("Method not implemented.");
   }
-  find(item: T): Promise<T[]> {
-    throw new Error("Method not implemented.");
+
+  async find(item: T): Promise<T[]> {
+    try {
+      let query = `SELECT * FROM "${this._tableName}"`;
+      let conditions = ` WHERE`;
+
+      const columns = Object.keys(item);
+      const values = Object.values(item);
+
+      let firstFilled = false;
+      columns.forEach((column, index) => {
+        if (values[index]) {
+          const firstCondition = !firstFilled ? "" : " AND";
+          const valueType =
+            typeof values[index] === "string"
+              ? `='${values[index]}'`
+              : `=${values[index]}`;
+
+          conditions += `${firstCondition} ${this._tableName}.${column}${valueType}`;
+
+          firstFilled = true;
+        }
+      });
+
+      query += conditions;
+
+      const queryResult: QueryResult = await this._pool.query(query);
+
+      return queryResult.rows;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
   }
+
   findOne(id: string): Promise<T> {
     throw new Error("Method not implemented.");
   }
