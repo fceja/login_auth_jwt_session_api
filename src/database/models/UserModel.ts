@@ -1,7 +1,7 @@
 import { UserInterface } from "@appTypes/IndexTypes";
 
 class UserModel {
-  user_id?: string;
+  userId?: string;
   email?: string;
   password?: string;
   createdAt?: string;
