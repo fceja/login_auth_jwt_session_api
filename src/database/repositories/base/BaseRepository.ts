@@ -5,8 +5,8 @@ import { Pool, QueryResult } from "pg";
 export abstract class BaseRepository<T>
   implements WriteInterface<T>, ReadInterface<T>
 {
-  private readonly _pool: Pool;
-  private readonly _tableName: string;
+  readonly _pool: Pool;
+  readonly _tableName: string;
 
   constructor(pool: Pool, tableName: string) {
     this._pool = pool;
