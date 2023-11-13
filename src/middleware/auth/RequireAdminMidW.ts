@@ -5,9 +5,11 @@ export default function requireAdminMidW(
   res: Response,
   next: NextFunction
 ) {
-  if (req.session.userRole === "admin") {
-    next();
-  } else {
-    res.status(403).send({ message: "Access denied" });
+  // verify user has admin role
+  if (!(req.session.userRole === "admin")) {
+    res.status(401).send({ message: "Unauthorized" });
   }
+
+  // user is authorized, pass request to next function
+  next();
 }
