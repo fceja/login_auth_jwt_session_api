@@ -1,7 +1,7 @@
 import express from "express";
 
+import * as userController from "@controllers/UserController";
 import createUserMidW from "@middleware/user/CreateUserMidW";
-import getUserMidW from "@middleware/user/GetUserMidW";
 import getUsersMidW from "@middleware/user/GetUsersMidW";
 import refreshJwtTokenMidW from "@middleware/auth/RefreshJwtTokenMidW";
 import requireAdminMidW from "@middleware/auth/RequireAdminMidW";
@@ -14,7 +14,7 @@ const usersRouter = express.Router();
 usersRouter.get(
   "/getUser",
   [validateJwtTokenMidW, refreshJwtTokenMidW],
-  getUserMidW
+  userController.getUser
 );
 usersRouter.get(
   "/getUsers",

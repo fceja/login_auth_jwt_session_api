@@ -45,6 +45,25 @@ export class UserRepository extends BaseRepository<UserModel | UserRoleModel> {
     }
   }
 
+  async getUserByUserId(userId: string) {
+    try {
+      const query = `
+        SELECT A.user_id, email, created_at, last_updated, role
+        FROM _users A
+        LEFT JOIN _user_roles B
+        ON A.user_id=B.user_id
+        WHERE A.user_id='${userId}'
+        `;
+
+      const queryResult: QueryResult = await this._pool.query(query);
+
+      return queryResult.rows[0];
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+
   // retrieve user by email and non-null role from db
   async getUserAndRoleByEmail(email: string): Promise<UserModel> {
     try {

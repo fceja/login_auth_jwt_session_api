@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import { Request, Response } from "express";
 
 import dbPool from "@utils/DbInit";
 import UserModel from "@models/UserModel";
@@ -30,25 +31,20 @@ export const createUser = async (userData: UserModel) => {
   }
 };
 
-export const getUser = async (userId: string) => {
-  // init db connection
-  const dbConn = await dbPool.connect();
+export const getUser = async (req: Request, res: Response) => {
+  try {
+    // init user db repo
+    const userDbrepo = new UserRepository(dbPool, "_users");
 
-  // excecute query
-  const data = await dbConn.query(
-    `
-    select _user.user_id, email, created_at, last_updated, role
-    from _user
-    left join _user_role
-    on _user.user_id = _user_role.user_id
-    where _user.user_id = ${userId}
-    `
-  );
+    const user = await userDbrepo.getUserByUserId(req.session.userId);
+    if (!user) throw new Error("Error getting user");
 
-  // end db connection
-  dbConn.release();
+    res.status(200).json({ user });
+  } catch (error) {
+    console.error(error);
 
-  return data.rows[0];
+    res.status(401).json({ message: "Not authorized" });
+  }
 };
 
 export const getUsers = async () => {
@@ -56,7 +52,7 @@ export const getUsers = async () => {
   const dbConn = await dbPool.connect();
 
   // excecute query
-  const data = await dbConn.query("select * from _user");
+  const data = await dbConn.query("select * from _users");
 
   // end db connection
   dbConn.release();
