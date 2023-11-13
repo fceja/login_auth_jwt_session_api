@@ -27,13 +27,6 @@ const parseUserDataToSession = (req: Request, storedUserData: UserModel) => {
   req.session.token = getSessionTokenMidW(req);
 };
 
-const validatePassword = (
-  payloadUserPass: string,
-  storedUserPass: string
-): boolean => {
-  return bcrypt.compareSync(payloadUserPass, storedUserPass);
-};
-
 // TODO - handle incorrect login gracefully
 export const loginAuth = async (req: Request, _res: Response) => {
   // parse user data from payload
@@ -50,16 +43,12 @@ export const loginAuth = async (req: Request, _res: Response) => {
     return false;
   }
 
-  // verify password is valid
-  const isPassValid = validatePassword(
-    payloadUserData.password,
-    storedUserData.password
-  );
-  if (!isPassValid) {
+  // validate pass is valid
+  if (!bcrypt.compareSync(payloadUserData.password, storedUserData.password)) {
     return false;
   }
 
-  // parse user data to session
+  // parse session data to request object
   parseUserDataToSession(req, storedUserData);
 
   return true;
