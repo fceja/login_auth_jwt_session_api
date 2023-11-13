@@ -13,8 +13,7 @@ export default async function createUserMidW(req: Request, res: Response) {
 
     res.status(200).json({ user });
   } catch (error) {
-    //error
     console.error(error);
-    res.status(500).json({ error: "Email error" });
+    res.status(401).json({ error: "Email error" });
   }
 }
