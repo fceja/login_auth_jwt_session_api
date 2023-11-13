@@ -6,6 +6,8 @@ import dbPool from "@utils/DbInit";
 import { getSessionTokenMidW } from "@middleware/auth/GetSessionTokenMidW";
 import _SessionData from "@appTypes/express-session/Index";
 import UserModel from "@models/UserModel";
+import UserRoleModel from "@models/UserRoleModel";
+import { UserRepository } from "@database/repositories/UserRepository";
 
 const getUserDataByEmailFromDb = async (userEmail: string) => {
   // init db connection
@@ -20,6 +22,41 @@ const getUserDataByEmailFromDb = async (userEmail: string) => {
   dbConn.release();
 
   return dbUserData;
+};
+
+const testDbBaseRepoFind = async () => {
+  const repository = new UserRepository(dbPool, "_users");
+
+  const userModel = {
+    email: "fceja@myemail.com",
+    password: "",
+    createdAt: "",
+    lastUpdated: "",
+  };
+
+  const results = await repository.find(userModel);
+
+  // log result(s)
+  if (results) {
+    results.forEach((result) => {
+      console.log(`\n${Object.entries(result)}`);
+    });
+  }
+};
+
+const testDBBaseRepoCreate = async () => {
+  const repository = new UserRepository(dbPool, "_user_roles");
+
+  const userRoleModel = {
+    user_id: "63",
+    role: "user",
+  };
+
+  // log result
+  const result = await repository.create(userRoleModel);
+  if (result) {
+    console.log(`created -> ${result}`);
+  }
 };
 
 const parseUserDataToSession = (req: Request, storedUserData: UserModel) => {
@@ -81,8 +118,8 @@ const dbGetUserByEmailWithRole = (dbConn: PoolClient, email: string) => {
   return dbConn.query(
     `
     select *
-    from _user t1
-    left join _user_role t2 on t1.user_id = t2.user_id
+    from _users t1
+    left join _user_roles t2 on t1.user_id = t2.user_id
     where t1.email='${email}' and t2.role is not NULL
     `
   );

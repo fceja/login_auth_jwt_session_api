@@ -15,29 +15,29 @@ export abstract class BaseRepository<T>
 
   async create(item: T): Promise<boolean> {
     try {
-      const columns = Object.keys(item).join(", ");
-      const values = Object.values(item);
+      const columns = Object.keys(item)
+        .map((column) => `${column}`)
+        .join(", ");
 
-      const query = `INSERT INTO ${
-        this._tableName
-      } (${columns}) VALUES (${values
-        .map((_, index) => `$${index + 1}`)
-        .join(", ")}) RETURNING id`;
+      const values = Object.values(item)
+        .map((value) => `'${value}'`)
+        .join(", ");
 
-      console.log(`query -> ${query}`);
-      //   const queryResult: QueryResult = await this._pool.query(
-      //     `INSERT INTO ${this._tableName} (${columns}) VALUES (${values
-      //       .map((_, index) => `$${index + 1}`)
-      //       .join(", ")}) RETURNING id`
-      //   );
+      const query = `INSERT INTO ${this._tableName} (${columns}) VALUES (${values})`;
 
-      //   return !!queryResult.rows[0]?.id;
-      return true;
+      const queryResult: QueryResult = await this._pool.query(query);
+
+      /**
+       *
+       * After insert operation, 'queryResult' return an object.
+       * We convert 'rowCount' prop to boolean (0 false, 1 true)
+       *
+       **/
+      return !!queryResult.rowCount;
     } catch (error) {
       console.error(error);
-      return false;
+      return null;
     }
-    // throw new Error( "Method not implemented.");
   }
 
   update(id: string, item: T): Promise<boolean> {
