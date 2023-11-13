@@ -7,41 +7,6 @@ import _SessionData from "@appTypes/express-session/Index";
 import UserModel from "@models/UserModel";
 import { UserRepository } from "@database/repositories/UserRepository";
 
-const testDbBaseRepoFind = async () => {
-  const repository = new UserRepository(dbPool, "_users");
-
-  const userModel = {
-    email: "fceja@myemail.com",
-    password: "",
-    createdAt: "",
-    lastUpdated: "",
-  };
-
-  const results = await repository.find(userModel);
-
-  // log result(s)
-  if (results) {
-    results.forEach((result) => {
-      console.log(`\n${Object.entries(result)}`);
-    });
-  }
-};
-
-const testDBBaseRepoCreate = async () => {
-  const repository = new UserRepository(dbPool, "_user_roles");
-
-  const userRoleModel = {
-    user_id: "63",
-    role: "user",
-  };
-
-  // log result
-  const result = await repository.create(userRoleModel);
-  if (result) {
-    console.log(`created -> ${result}`);
-  }
-};
-
 const parseUserDataToSession = (req: Request, storedUserData: UserModel) => {
   /* NOTE */
   /**
