@@ -5,7 +5,7 @@ import loginAuthMidW from "@middleware/auth/LoginAuthMidW";
 const authRouter = express.Router();
 
 // #region - NO AUTH REQ
-// POST
+// POST /auth/login
 authRouter.post("/login", loginAuthMidW);
 // #endregion - NO AUTH REQ
 
