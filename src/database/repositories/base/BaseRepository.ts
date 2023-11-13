@@ -80,4 +80,17 @@ export abstract class BaseRepository<T>
   findOne(id: string): Promise<T> {
     throw new Error("Method not implemented.");
   }
+
+  async retrieveAllTableRecords(): Promise<T[]> {
+    try {
+      let query = `SELECT * FROM ${this._tableName}`;
+
+      const queryResult: QueryResult = await this._pool.query(query);
+
+      return queryResult.rows;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
 }

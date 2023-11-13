@@ -2,7 +2,6 @@ import express from "express";
 
 import * as userController from "@controllers/UserController";
 import createUserMidW from "@middleware/user/CreateUserMidW";
-import getUsersMidW from "@middleware/user/GetUsersMidW";
 import refreshJwtTokenMidW from "@middleware/auth/RefreshJwtTokenMidW";
 import requireAdminMidW from "@middleware/auth/RequireAdminMidW";
 import validateJwtTokenMidW from "@middleware/auth/ValidateJwtTokenMidW";
@@ -19,7 +18,7 @@ usersRouter.get(
 usersRouter.get(
   "/getUsers",
   [requireAdminMidW, validateJwtTokenMidW, refreshJwtTokenMidW],
-  getUsersMidW
+  userController.getUsers
 );
 // #endregion - AUTH REQ
 

@@ -36,6 +36,7 @@ export const getUser = async (req: Request, res: Response) => {
     // init user db repo
     const userDbrepo = new UserRepository(dbPool, "_users");
 
+    // retrieve user by userId
     const user = await userDbrepo.getUserByUserId(req.session.userId);
     if (!user) throw new Error("Error getting user");
 
@@ -47,15 +48,19 @@ export const getUser = async (req: Request, res: Response) => {
   }
 };
 
-export const getUsers = async () => {
-  // init db connection
-  const dbConn = await dbPool.connect();
+export const getUsers = async (req: Request, res: Response) => {
+  try {
+    // init user db repo
+    const userDbrepo = new UserRepository(dbPool, "_users");
 
-  // excecute query
-  const data = await dbConn.query("select * from _users");
+    // retrieve all records for table
+    const users = await userDbrepo.retrieveAllTableRecords();
 
-  // end db connection
-  dbConn.release();
+    // return users;
+    res.status(200).json({ "from GET /user/getUsers": users });
+  } catch (error) {
+    console.error(error);
 
-  return data.rows;
+    res.status(400).json(console.error(error));
+  }
 };
