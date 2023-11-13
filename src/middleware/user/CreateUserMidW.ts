@@ -9,7 +9,7 @@ export default async function createUserMidW(req: Request, res: Response) {
     const user_model = new NewUserModel(req.body);
     const user = await createUser(user_model);
 
-    if (!user) throw new Error();
+    if (!user) throw new Error("User not created");
 
     res.status(200).json({ user });
   } catch (error) {

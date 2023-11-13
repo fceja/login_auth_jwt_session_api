@@ -49,12 +49,12 @@ export class UserRepository extends BaseRepository<UserModel | UserRoleModel> {
   async getUserAndRoleByEmail(email: string): Promise<UserModel> {
     try {
       const query = `
-            SELECT *
-            FROM _users A
-            LEFT JOIN _user_roles B
-            ON A.user_id=B.user_id
-            WHERE A.email='${email}' and B.role IS NOT NULL
-            `;
+        SELECT *
+        FROM _users A
+        LEFT JOIN _user_roles B
+        ON A.user_id=B.user_id
+        WHERE A.email='${email}' and B.role IS NOT NULL
+        `;
 
       const queryResult: QueryResult = await this._pool.query(query);
 
