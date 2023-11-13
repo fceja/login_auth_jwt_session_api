@@ -9,14 +9,12 @@ export default async function createUserMidW(req: Request, res: Response) {
     const user_model = new NewUserModel(req.body);
     const user = await createUser(user_model);
 
-    if (user === false) {
-      res.status(200).json({ message: "Email exists" });
-    } else {
-      res.status(200).json({ user });
-    }
-  } catch (err) {
+    if (!user) throw new Error();
+
+    res.status(200).json({ user });
+  } catch (error) {
     //error
-    console.error(err);
-    res.status(500).json({ error: "Internal server error" });
+    console.error(error);
+    res.status(500).json({ error: "Email error" });
   }
 }
