@@ -2,32 +2,32 @@ import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 
 import dbPool from "@utils/DbInit";
-import UserModel from "@models/UserModel";
+import NewUserModel from "@models/NewUserModel";
 import { UserRepository } from "@database/repositories/UserRepository";
 
-export const createUser = async (userData: UserModel) => {
+export const createUser = async (req: Request, res: Response) => {
   try {
+    // parse user data from payload
+    const newUserData = new NewUserModel(req.body);
+
+    // hash user password
+    newUserData.password = bcrypt.hashSync(newUserData.password, 10);
+
     // init user db repositiory
     const userDbrepo = new UserRepository(dbPool, "_users");
 
-    // check if user already exists
-    const rows = await userDbrepo.getUserByEmail(userData.email);
-    if (Object.entries(rows).length) throw new Error("Email exists");
-
-    // hash user password
-    userData.password = bcrypt.hashSync(userData.password, 10);
-
     // create user
-    const createdUser = await userDbrepo.createUser(userData);
+    const createdUser = await userDbrepo.createUser(newUserData);
 
-    // update newly created user role
+    // update newly created user role to default 'user'
     if (!(await userDbrepo.updateUserRole(createdUser.user_id, "user")))
       throw new Error("Error updating user role");
 
-    return createdUser;
+    return res.status(200).json({ createdUser });
   } catch (error) {
     console.error(error);
-    return null;
+
+    return res.status(401).json({ message: "Error creating user." });
   }
 };
 
