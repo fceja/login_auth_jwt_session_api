@@ -1,12 +1,13 @@
 import express from "express";
 
-import loginAuthMidW from "@middleware/auth/LoginAuthMidW";
+import * as authController from "@controllers/AuthController";
+import { userEmailAndRoleExistsMW } from "@/src/middleware/user/ValidateUserEmailMidW";
 
 const authRouter = express.Router();
 
 // #region - NO AUTH REQ
 // POST /auth/login
-authRouter.post("/login", loginAuthMidW);
+authRouter.post("/login", [userEmailAndRoleExistsMW], authController.loginAuth);
 // #endregion - NO AUTH REQ
 
 export default authRouter;

@@ -27,29 +27,30 @@ const parseUserDataToSession = (req: Request, storedUserData: UserModel) => {
   req.session.token = getSessionTokenMidW(req);
 };
 
-// TODO - handle incorrect login gracefully
-export const loginAuth = async (req: Request, _res: Response) => {
-  // parse user data from payload
-  const payloadUserData = new UserModel(req.body);
+export const loginAuth = async (req: Request, res: Response) => {
+  try {
+    // parse user data from payload
+    const payloadUserData = new UserModel(req.body);
 
-  // init user db repo
-  const userDbrepo = new UserRepository(dbPool, "_users");
+    // // init user db repo
+    const userDbrepo = new UserRepository(dbPool, "_users");
 
-  // get user data from db
-  const storedUserData: UserModel = await userDbrepo.getUserAndRoleByEmail(
-    payloadUserData.email
-  );
-  if (!storedUserData) {
-    return false;
+    // // get user data from db
+    const storedUserData: UserModel = await userDbrepo.getUserAndRoleByEmail(
+      payloadUserData.email
+    );
+
+    // validate pass is valid
+    if (!bcrypt.compareSync(payloadUserData.password, storedUserData.password))
+      throw new Error("Login error");
+
+    // parse session data to request object
+    parseUserDataToSession(req, storedUserData);
+
+    return res.status(200).json({ message: "Authorized" });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(401).json({ message: "Not authorized." });
   }
-
-  // validate pass is valid
-  if (!bcrypt.compareSync(payloadUserData.password, storedUserData.password)) {
-    return false;
-  }
-
-  // parse session data to request object
-  parseUserDataToSession(req, storedUserData);
-
-  return true;
 };
