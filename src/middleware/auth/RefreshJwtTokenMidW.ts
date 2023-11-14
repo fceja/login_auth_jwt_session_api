@@ -18,9 +18,17 @@ const refreshJwtTokenMidW = (
   _res: Response,
   next: NextFunction
 ) => {
-  req.session.token = getSessionTokenMidW(req);
+  try {
+    // apply new jwt token to session
+    req.session.token = getSessionTokenMidW(req);
 
-  next();
+    // pass request to next function
+    next();
+  } catch (error) {
+    console.error(error);
+
+    return null;
+  }
 };
 
 export default refreshJwtTokenMidW;

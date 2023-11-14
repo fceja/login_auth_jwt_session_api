@@ -34,7 +34,6 @@ export class UserRepository extends BaseRepository<UserModel | UserRoleModel> {
         ON A.user_id = B.user_id
         WHERE A.email='${email}'
         `;
-      console.log(`query -> ${query}`);
 
       const queryResult: QueryResult = await this._pool.query(query);
 

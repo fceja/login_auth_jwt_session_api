@@ -19,12 +19,6 @@ const decodeJwtToken = (req: Request) => {
   }
 };
 
-const returnErrorResponse = (res: Response) => {
-  return res.status(401).send({
-    message: "Invalid user",
-  });
-};
-
 const validateJwtToken = (
   req: Request,
   decodedJwtToken: string | jwt.JwtPayload
@@ -41,10 +35,11 @@ const validateJwtToken = (
       );
 
       return true;
-    } else {
-      throw new Error();
     }
+
+    throw new Error("Invalid jwt");
   } catch (error) {
+    console.error(error);
     return false;
   }
 };
@@ -70,20 +65,24 @@ const validateJwtTokenMidW = (
   res: Response,
   next: NextFunction
 ): Response | NextFunction | void => {
-  // decode session jwt token
-  const decodedJwtToken = decodeJwtToken(req);
-  if (!decodedJwtToken) {
-    return returnErrorResponse(res);
-  }
+  try {
+    // decode session jwt token
+    const decodedJwtToken = decodeJwtToken(req);
+    if (!decodedJwtToken) throw new Error("Error decoding.");
 
-  // validate session jwt token
-  const isJwtTokenValid = validateJwtToken(req, decodedJwtToken);
-  if (!isJwtTokenValid) {
-    return returnErrorResponse(res);
-  }
+    // validate session jwt token
+    const isJwtTokenValid = validateJwtToken(req, decodedJwtToken);
+    if (!isJwtTokenValid) throw new Error("Invalid jwt.");
 
-  // jwt is valid, invoke next
-  return next();
+    // jwt is valid, invoke next
+    return next();
+  } catch (error) {
+    console.error(error);
+
+    return res.status(401).send({
+      message: "Invalid user",
+    });
+  }
 };
 
 export default validateJwtTokenMidW;
