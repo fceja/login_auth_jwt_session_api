@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 
-import dbPool from "@utils/DbInit";
+import dbPool from "@database/DbInit";
 import { getSessionTokenMidW } from "@middleware/auth/GetSessionTokenMidW";
 import _SessionData from "@appTypes/express-session/Index";
 import UserModel from "@models/UserModel";
